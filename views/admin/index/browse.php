@@ -29,7 +29,13 @@ $sequenceElementSetName = $sequenceElement->getElementSet()->name;
         <td><?php echo link_to($corpus, 'show', $corpus->name);?></td>
         <td><?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?></td>
         <td><?php echo $corpus->getSequenceTypeLabel(); ?></td>
-        <td><?php echo $corpus->sequence_range; ?></td>
+        <td>
+            <?php if ($corpus->sequence_range): ?>
+            <?php echo $corpus->sequence_range; ?>
+            <?php else: ?>
+            <em>No range</em>
+            <?php endif; ?>
+        </td>
     </tr>
 <?php endforeach; ?>
 </tbody>
