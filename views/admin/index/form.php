@@ -9,14 +9,6 @@
     </div>
     <div class="field">
         <div class="two columns alpha">
-            <label for="query">Query</label>
-        </div>
-        <div class="inputs five columns omega">
-            <?php echo $this->formText('query', $corpus->query); ?>
-        </div>
-    </div>
-    <div class="field">
-        <div class="two columns alpha">
             <label for="sequence_element_id" class="required">Sequence Element</label>
         </div>
         <div class="inputs five columns omega">
@@ -47,6 +39,14 @@
         </div>
         <div class="inputs five columns omega">
             <?php echo $this->formText('sequence_range', $corpus->sequence_range); ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="two columns alpha">
+            <label for="query">Item Pool Query</label>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formText('query', $corpus->query); ?>
         </div>
     </div>
 </section>

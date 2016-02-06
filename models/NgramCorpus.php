@@ -14,6 +14,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         'SequenceElement' => 'getSequenceElement',
         'ItemsPool' => 'getItemsPool',
         'ItemsCorpus' => 'getItemsCorpus',
+        'Query' => 'getQuery',
     );
 
     /**
@@ -57,6 +58,17 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     public function getItemsCorpus()
     {
         return json_decode($this->items_corpus, true);
+    }
+
+    /**
+     * Get the query used to fetch the item pool.
+     *
+     * @return array
+     */
+    public function getQuery()
+    {
+        parse_str($this->query, $query);
+        return $query;
     }
 
     /**
@@ -117,7 +129,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         }
 
         // Retrieve and set the item pool.
-        parse_str($this->query, $query);
+        $query = $this->Query;
         // Items must be described by the corpus sequence element.
         $query['advanced'][] = array(
             'element_id' => $this->sequence_element_id,

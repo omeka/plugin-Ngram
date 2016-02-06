@@ -12,18 +12,23 @@ $sequenceElementSetName = $sequenceElement->getElementSet()->name;
     <h2>Sequence Type</h2>
     <p><?php echo $corpus->getSequenceTypeLabel(); ?></p>
     <h2>Sequence Range</h2>
+    <?php if ($corpus->sequence_range): ?>
     <p><?php echo $corpus->sequence_range; ?></p>
-    <h2>Item Counts</h2>
-    <ul>
-        <li>Pool: <?php echo count($corpus->ItemsPool); ?></li>
-        <li>Corpus: <?php echo count($corpus->ItemsCorpus); ?></li>
-    </ul>
+    <?php else: ?>
+    <p><em>No range</em></p>
+    <?php endif; ?>
+    <h2>Item Pool Query</h2>
+    <?php if ($corpus->query): ?>
+    <p><textarea rows="3"><?php echo $corpus->query; ?></textarea></p>
+    <?php else: ?>
+    <p><em>No query</em></p>
+    <?php endif; ?>
 </section>
 
 <section class="three columns omega">
     <div id="save" class="panel">
         <?php if ($corpus->canEdit()): ?>
-        <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit</a>
+        <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit Corpus</a>
         <?php else: ?>
         <p class="error">This corpus is locked: the items were validated and accepted; no further edits are allowed.</p>
         <?php endif; ?>
@@ -40,6 +45,13 @@ $sequenceElementSetName = $sequenceElement->getElementSet()->name;
             <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button')) ?>
         </form>
         <?php endif; ?>
+    </div>
+    <div class="panel">
+        <h4>Item Counts</h4>
+        <ul>
+            <li>Pool: <?php echo count($corpus->ItemsPool); ?></li>
+            <li>Corpus: <?php echo count($corpus->ItemsCorpus); ?></li>
+        </ul>
     </div>
 </section>
 
