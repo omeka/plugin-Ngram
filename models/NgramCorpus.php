@@ -4,6 +4,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     public $id;
     public $name;
     public $query;
+    public $text_element_id;
     public $sequence_element_id;
     public $sequence_type;
     public $sequence_range;
@@ -11,11 +12,22 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     public $items_corpus;
 
     protected $_related = array(
+        'TextElement' => 'getTextElement',
         'SequenceElement' => 'getSequenceElement',
         'ItemsPool' => 'getItemsPool',
         'ItemsCorpus' => 'getItemsCorpus',
         'Query' => 'getQuery',
     );
+
+    /**
+     * Get the element containing item text.
+     *
+     * @return Element
+     */
+    public function getTextElement()
+    {
+        return $this->getTable('Element')->find($this->text_element_id);
+    }
 
     /**
      * Get the element containing sequence text.
@@ -72,6 +84,19 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
+     * Does this corpus have a valid text element.
+     *
+     * A corpus text element is valid if it's the one currently set in plugin
+     * configuration.
+     *
+     * @return bool
+     */
+    public function hasValidTextElement()
+    {
+        return $this->text_element_id === (int) get_option('ngram_text_element_id');
+    }
+
+    /**
      * Can a user edit this corpus?
      *
      * A user cannot edit a corpus if the items have been validated.
@@ -80,7 +105,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canEdit()
     {
-        return (bool) !$this->ItemsCorpus;
+        return $this->hasValidTextElement() && !$this->ItemsCorpus;
     }
 
     /**
@@ -90,7 +115,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canValidateItems()
     {
-        return (bool) $this->ItemsPool && !$this->ItemsCorpus;
+        return $this->hasValidTextElement() && $this->ItemsPool && !$this->ItemsCorpus;
     }
 
     /**
@@ -100,7 +125,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canGenerateNgrams()
     {
-        return (bool) $this->ItemsCorpus;
+        return $this->hasValidTextElement() && $this->ItemsCorpus;
     }
 
     public function getRecordUrl($action = 'show')
@@ -122,29 +147,30 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
 
     protected function beforeSave($args)
     {
-        // There's no need to retrieve and set the item pool if the corpus
-        // items are set.
-        if ($this->items_corpus) {
-            return;
+        if ($args['insert']) {
+            // Set the text element ID on insert.
+            $this->text_element_id = get_option('ngram_text_element_id');
         }
 
-        // Retrieve and set the item pool.
-        $query = $this->Query;
-        // Items must be described by the corpus sequence element.
-        $query['advanced'][] = array(
-            'element_id' => $this->sequence_element_id,
-            'type' => 'is not empty',
-        );
-        // Items must be described by the corpus text element.
-        $query['advanced'][] = array(
-            'element_id' => get_option('ngram_text_element_id'),
-            'type' => 'is not empty',
-        );
-        $items = $this->getTable('Item')->findBy($query);
-        $itemIds = array();
-        foreach ($items as $item) {
-            $itemIds[] = $item->id;
+        if (!$this->items_corpus) {
+            // Retrieve and set the item pool.
+            $query = $this->Query;
+            // Items must be described by the corpus sequence element.
+            $query['advanced'][] = array(
+                'element_id' => $this->sequence_element_id,
+                'type' => 'is not empty',
+            );
+            // Items must be described by the corpus text element.
+            $query['advanced'][] = array(
+                'element_id' => get_option('ngram_text_element_id'),
+                'type' => 'is not empty',
+            );
+            $items = $this->getTable('Item')->findBy($query);
+            $itemIds = array();
+            foreach ($items as $item) {
+                $itemIds[] = $item->id;
+            }
+            $this->items_pool = json_encode($itemIds);
         }
-        $this->items_pool = json_encode($itemIds);
     }
 }

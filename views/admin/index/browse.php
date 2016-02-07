@@ -13,6 +13,7 @@ echo flash();
 <thead>
     <tr>
         <th>Name</th>
+        <th>Text Element</th>
         <th>Sequence Element</th>
         <th>Sequence Type</th>
         <th>Sequence Range</th>
@@ -21,12 +22,17 @@ echo flash();
 <tbody>
 <?php foreach (loop('ngram_corpus') as $corpus): ?>
 <?php
+$textElement = $corpus->TextElement;
+$textElementName = $textElement->name;
+$textElementSetName = $textElement->getElementSet()->name;
+
 $sequenceElement = $corpus->SequenceElement;
 $sequenceElementName = $sequenceElement->name;
 $sequenceElementSetName = $sequenceElement->getElementSet()->name;
 ?>
     <tr>
         <td><?php echo link_to($corpus, 'show', $corpus->name);?></td>
+        <td><?php echo sprintf('%s (%s)', $textElementName, $textElementSetName); ?></td>
         <td><?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?></td>
         <td><?php echo $corpus->getSequenceTypeLabel(); ?></td>
         <td>

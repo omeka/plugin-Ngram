@@ -20,9 +20,10 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `query` text COLLATE utf8_unicode_ci,
+  `text_element_id` int(10) unsigned NOT NULL,
   `sequence_element_id` int(10) unsigned NOT NULL,
-  `sequence_type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `sequence_range` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sequence_type` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `sequence_range` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `items_pool` text COLLATE utf8_unicode_ci,
   `items_corpus` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
@@ -33,7 +34,7 @@ SQL
 CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_ngrams` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `ngram` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `n` tinyint(3) unsigned NOT NULL,
+  `n` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ngram_n` (`ngram`,`n`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -53,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus_ngrams` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `corpus_id` int(10) unsigned NOT NULL,
   `ngram_id` int(10) unsigned NOT NULL,
-  `sequence_member` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `sequence_member` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `match_count` int(10) unsigned NOT NULL,
   `item_count` int(10) unsigned NOT NULL,
   `relative_frequency` decimal(21,20) NOT NULL,
@@ -84,7 +85,17 @@ SQL
 
     public function hookConfig($args)
     {
-        set_option('ngram_text_element_id', $args['post']['text_element_id']);
+        $oldId = (int) get_option('ngram_text_element_id');
+        $newId = (int) $args['post']['text_element_id'];
+        if ($oldId !== $newId) {
+            // Setting a new text element invalidates the relationship between
+            // an item and it's ngrams. Truncate the item_ngrams table so new
+            // relationships can be built. Note that we do not also truncate the
+            // ngrams table because the ngrams therein can be re-used.
+            $db = get_db();
+            $db->query("TRUNCATE TABLE `{$db->prefix}ngram_item_ngrams`");
+        }
+        set_option('ngram_text_element_id', $newId);
     }
 
     public function hookDefineAcl($args)

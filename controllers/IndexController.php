@@ -11,9 +11,10 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
         parent::addAction();
 
         $table = $this->_helper->db;
+        $this->view->corpus = $this->view->ngram_corpu; // correct poor inflection
+        $this->view->textElement = $table->getTable('Element')->find(get_option('ngram_text_element_id'));
         $this->view->sequenceTypeOptions = $table->getTable()->getSequenceTypesForSelect();
         $this->view->sequenceElementOptions = $table->getTable()->getElementsForSelect();
-        $this->view->corpus = $this->view->ngram_corpu; // correct poor inflection
     }
 
     public function editAction()
@@ -21,9 +22,10 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
         parent::editAction();
 
         $table = $this->_helper->db;
+        $this->view->corpus = $this->view->ngram_corpu; // correct poor inflection
+        $this->view->textElement = $this->view->corpus->TextElement;
         $this->view->sequenceTypeOptions = $table->getTable()->getSequenceTypesForSelect();
         $this->view->sequenceElementOptions = $table->getTable()->getElementsForSelect();
-        $this->view->corpus = $this->view->ngram_corpu; // correct poor inflection
     }
 
     public function showAction()

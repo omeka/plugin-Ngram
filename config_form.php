@@ -11,7 +11,7 @@
                 $elementOptions
             ) ?>
             <p class="explanation">Select an element that contains the text from which to derive ngrams.</p>
-            <p class="error"><strong>WARNING</strong>: Changing the text element after it's been set will delete all corpora, item ngrams, and corpora ngrams. Be sure to back up existing corpora ngrams before changing the text element.</p>
+            <p class="error"><strong>WARNING</strong>: Changing the text element after it's been set will delete all item ngrams. You will not be able to edit, validate items, or generate ngrams for corpora set to a different text element. Existing corpus ngrams are not affected.</p>
         </div>
     </div>
 </section>

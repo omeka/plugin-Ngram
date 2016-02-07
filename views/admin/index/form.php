@@ -1,3 +1,7 @@
+<?php
+$textElementName = $textElement->name;
+$textElementSetName = $textElement->getElementSet()->name;
+?>
 <section class="seven columns alpha">
     <div class="field">
         <div class="two columns alpha">
