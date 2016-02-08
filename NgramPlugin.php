@@ -32,7 +32,7 @@ SQL
         );
         $db->query(<<<SQL
 CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_ngrams` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ngram` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `n` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
@@ -42,8 +42,8 @@ SQL
         );
         $db->query(<<<SQL
 CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_item_ngrams` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `ngram_id` int(10) unsigned NOT NULL,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `ngram_id` bigint(20) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -51,9 +51,9 @@ SQL
         );
         $db->query(<<<SQL
 CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus_ngrams` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `corpus_id` int(10) unsigned NOT NULL,
-  `ngram_id` int(10) unsigned NOT NULL,
+  `ngram_id` bigint(20) unsigned NOT NULL,
   `sequence_member` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `match_count` int(10) unsigned NOT NULL,
   `item_count` int(10) unsigned NOT NULL,
