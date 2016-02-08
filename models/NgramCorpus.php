@@ -143,6 +143,9 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         if (!$this->getTable()->sequenceTypeExists($this->sequence_type)) {
             $this->addError('Sequence Type', 'Invalid sequence type');
         }
+        if ($this->sequence_range && !preg_match('/^[^\s-]+-[^\s-]+$/', $this->sequence_range)) {
+            $this->addError('Sequence Range', 'Invalid sequence range');
+        }
     }
 
     protected function beforeSave($args)
