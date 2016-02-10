@@ -39,13 +39,14 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
     {
         $request = $this->getRequest();
         if ($request->isPost()) {
+            $n = $request->getPost('n');
             $corpus = $this->_helper->db->findById();
-            Omeka_Job_Process_Dispatcher::startProcess(
-                'Process_GenerateNgrams', null, array(
-                    'corpus_id' => $corpus->id,
-                    'n' => $request->getPost('n'),
-                )
+            $process = Omeka_Job_Process_Dispatcher::startProcess(
+                'Process_GenerateNgrams', null, array('corpus_id' => $corpus->id, 'n' => $n)
             );
+            $processProperty = "n{$n}_process_id";
+            $corpus->$processProperty = $process->id;
+            $corpus->save(true);
             $this->_helper->flashMessenger('The corpus ngrams are now being generated. This may take some time.', 'success');
             $this->_helper->redirector->gotoRoute(array('action' => 'show', 'id' => $corpus->id), 'ngramId');
         }

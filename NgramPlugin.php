@@ -26,6 +26,8 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus` (
   `sequence_range` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `items_pool` text COLLATE utf8_unicode_ci,
   `items_corpus` text COLLATE utf8_unicode_ci,
+  `n1_process_id` int(11) DEFAULT NULL,
+  `n2_process_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL

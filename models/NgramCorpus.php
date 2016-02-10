@@ -10,6 +10,8 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     public $sequence_range;
     public $items_pool;
     public $items_corpus;
+    public $n1_process_id;
+    public $n2_process_id;
 
     protected $_related = array(
         'TextElement' => 'getTextElement',
@@ -17,6 +19,8 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         'ItemsPool' => 'getItemsPool',
         'ItemsCorpus' => 'getItemsCorpus',
         'Query' => 'getQuery',
+        'N1Process' => 'getN1Process',
+        'N2Process' => 'getN2Process',
     );
 
     /**
@@ -84,6 +88,26 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
+     * Get the process responsible for generating unigrams.
+     *
+     * @return Process
+     */
+    public function getN1Process()
+    {
+        return $this->getTable('Process')->find($this->n1_process_id);
+    }
+
+    /**
+     * Get the process responsible for generating bigrams.
+     *
+     * @return Process
+     */
+    public function getN2Process()
+    {
+        return $this->getTable('Process')->find($this->n2_process_id);
+    }
+
+    /**
      * Does this corpus have a valid text element.
      *
      * A corpus text element is valid if it's the one currently set in plugin
@@ -119,13 +143,31 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
-     * Can a user generate ngrams?
+     * Can a user generate unigrams?
      *
      * @return bool
      */
-    public function canGenerateNgrams()
+    public function canGenerateN1grams()
     {
-        return $this->hasValidTextElement() && $this->ItemsCorpus;
+        return $this->hasValidTextElement()
+            && $this->ItemsCorpus
+            && !$this->N1Process;
+    }
+
+    /**
+     * Can a user generate bigrams?
+     *
+     * @return bool
+     */
+    public function canGenerateN2grams()
+    {
+        return $this->hasValidTextElement()
+            && $this->ItemsCorpus
+            && (
+                $this->N1Process
+                && Process::STATUS_COMPLETED === $this->N1Process->status
+            )
+            && !$this->N2Process;
     }
 
     public function getRecordUrl($action = 'show')
