@@ -3,8 +3,17 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
 {
     public function init()
     {
+        if ('no-text-element' !== $this->getRequest()->getActionName()
+            && !get_option('ngram_text_element_id')
+        ) {
+            // A text element must be set to use this module.
+            $this->_helper->redirector->gotoRoute(array('action' => 'no-text-element'), 'ngramCorpora');
+        }
         $this->_helper->db->setDefaultModelName('NgramCorpus');
     }
+
+    public function noTextElementAction()
+    {}
 
     public function addAction()
     {

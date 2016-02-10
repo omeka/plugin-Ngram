@@ -149,9 +149,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canGenerateN1grams()
     {
-        return $this->hasValidTextElement()
-            && $this->ItemsCorpus
-            && !$this->N1Process;
+        return $this->hasValidTextElement() && $this->ItemsCorpus && !$this->N1Process;
     }
 
     /**

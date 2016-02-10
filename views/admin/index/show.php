@@ -46,7 +46,7 @@ echo flash();
     <div id="save" class="panel">
         <h4>Generate Ngrams</h4>
         <?php if ($corpus->canEdit()): ?>
-            <p class="error">Cannot generate ngrams until items have been validated.</p>
+            <p>Cannot generate ngrams until items have been validated.</p>
         <?php else: ?>
             <?php if ($corpus->canGenerateN1grams()): ?>
                 <form method="post" action="<?php echo url('ngram/corpora/generate-ngrams/' . $corpus->id); ?>">
@@ -56,7 +56,7 @@ echo flash();
             <?php elseif ($corpus->N1Process && Process::STATUS_IN_PROGRESS === $corpus->N1Process->status): ?>
                 <p>Unigram generation in progress...</p>
             <?php elseif ($corpus->N1Process && Process::STATUS_COMPLETED === $corpus->N1Process->status): ?>
-                <p>Unigram generation completed.</p>
+                <p class="success">Unigram generation completed.</p>
             <?php else: ?>
                 <p class="error">Error generating unigrams.</p>
             <?php endif; ?>
@@ -68,7 +68,7 @@ echo flash();
             <?php elseif ($corpus->N2Process && Process::STATUS_IN_PROGRESS === $corpus->N2Process->status): ?>
                 <p>Bigram generation in progress...</p>
             <?php elseif ($corpus->N2Process && Process::STATUS_COMPLETED === $corpus->N2Process->status): ?>
-                <p>Bigram generation completed.</p>
+                <p class="success">Bigram generation completed.</p>
             <?php elseif ($corpus->N2Process): ?>
                 <p class="error">Error generating bigrams.</p>
             <?php endif; ?>
