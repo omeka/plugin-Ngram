@@ -37,7 +37,7 @@ echo flash();
         <?php if ($corpus->canEdit()): ?>
             <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit Corpus</a>
             <?php if ($corpus->canValidateItems()): ?>
-                <a href="<?php echo $corpus->getRecordUrl('validate');; ?>" class="big green button">Validate Items</a>
+                <a href="<?php echo $corpus->getRecordUrl('validate'); ?>" class="big green button">Validate Items</a>
             <?php endif; ?>
         <?php else: ?>
             <p>The corpus items have been validated. No further edits are allowed.</p>
@@ -49,7 +49,7 @@ echo flash();
             <p>Cannot generate ngrams until items have been validated.</p>
         <?php else: ?>
             <?php if ($corpus->canGenerateN1grams()): ?>
-                <form method="post" action="<?php echo url('ngram/corpora/generate-ngrams/' . $corpus->id); ?>">
+                <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
                     <?php echo $this->formHidden('n', 1); ?>
                     <?php echo $this->formSubmit('generate_ngrams', 'Generate Unigrams', array('class' => 'big green button')) ?>
                 </form>
@@ -61,7 +61,7 @@ echo flash();
                 <p class="error">Error generating unigrams.</p>
             <?php endif; ?>
             <?php if ($corpus->canGenerateN2grams()): ?>
-                <form method="post" action="<?php echo url('ngram/corpora/generate-ngrams/' . $corpus->id); ?>">
+                <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
                     <?php echo $this->formHidden('n', 2); ?>
                     <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button')) ?>
                 </form>

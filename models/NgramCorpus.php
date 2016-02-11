@@ -170,7 +170,12 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
 
     public function getRecordUrl($action = 'show')
     {
-        return url(array('action' => $action, 'id' => $this->id), 'ngramId');
+        return url(array(
+            'module' => 'ngram',
+            'controller' => 'corpora',
+            'action' => $action,
+            'id' => $this->id
+        ));
     }
 
     protected function _validate() {

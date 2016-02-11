@@ -10,7 +10,10 @@ class NgramPlugin extends Omeka_Plugin_AbstractPlugin
         'define_routes',
     );
 
-    protected $_filters = array('admin_navigation_main');
+    protected $_filters = array(
+        'admin_navigation_main',
+        'public_navigation_main',
+    );
 
     public function hookInstall()
     {
@@ -115,6 +118,16 @@ SQL
         $nav[] = array(
             'label' => __('Ngram'),
             'uri' => url('ngram/corpora'),
+            'resource' => ('Ngram_Index'),
+        );
+        return $nav;
+    }
+
+    public function filterPublicNavigationMain($nav)
+    {
+        $nav[] = array(
+            'label' => __('Ngram Viewer'),
+            'uri' => url('ngram'),
             'resource' => ('Ngram_Index'),
         );
         return $nav;

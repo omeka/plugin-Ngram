@@ -27,7 +27,7 @@ jQuery(window).load(function () {
 <div id="valid-items">
 <h3>Valid Items (<?php echo $validCount; ?>)</h3>
 <?php if ($validCount): ?>
-<form method="post" action="<?php echo html_escape(url('ngram/corpora/validate/' . $corpus->id)); ?>">
+<form method="post">
     <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
 </form>
 <table>
