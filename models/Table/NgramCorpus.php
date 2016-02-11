@@ -17,10 +17,6 @@ class Table_NgramCorpus extends Omeka_Db_Table
             'label' => 'Date by day',
             'validator' => 'Ngram_CorpusValidator_Day',
         ),
-        'alpha' => array(
-            'label' => 'Alphabetical',
-            'validator' => 'Ngram_CorpusValidator_Alpha',
-        ),
         'numeric' => array(
             'label' => 'Numerical',
             'validator' => 'Ngram_CorpusValidator_Numeric',
