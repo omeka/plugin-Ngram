@@ -7,7 +7,6 @@ class NgramPlugin extends Omeka_Plugin_AbstractPlugin
         'config_form',
         'config',
         'define_acl',
-        'define_routes',
     );
 
     protected $_filters = array(
@@ -106,11 +105,6 @@ SQL
     public function hookDefineAcl($args)
     {
         $args['acl']->addResource('Ngram_Index');
-    }
-
-    public function hookDefineRoutes($args)
-    {
-        $args['router']->addConfig(new Zend_Config_Ini(__DIR__ . '/routes.ini', 'routes'));
     }
 
     public function filterAdminNavigationMain($nav)
