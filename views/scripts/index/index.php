@@ -9,18 +9,21 @@ jQuery(document).ready(function() {
     var chart = c3.generate({
         bindto: '#chart',
         data: {
-            x: 'x',
-            xFormat: <?php echo $this->xFormat; ?>,
-            rows: <?php echo $this->data; ?>
+            xFormat: <?php echo json_encode($this->xFormat); ?>,
+            json: <?php echo json_encode($this->json); ?>,
+            keys: {
+                x: 'x',
+                value: <?php echo json_encode($this->keysValue); ?>
+            }
         },
         axis: {
             x: {
                 type: 'timeseries',
                 tick: {
                     count: 8,
-                    format: <?php echo $this->xTickFormat; ?>
+                    format: <?php echo json_encode($this->xTickFormat); ?>
                 },
-                padding: {left: 6},
+                padding: {left: 0},
             },
             y: {
                 label: {
@@ -30,7 +33,7 @@ jQuery(document).ready(function() {
                 tick: {
                     format: d3.format('.6%')
                 },
-                padding: {bottom: 6}
+                padding: {bottom: 0}
             }
         },
         tooltip: {
@@ -47,7 +50,7 @@ jQuery(document).ready(function() {
 <h1>Ngram Viewer</h1>
 <form>
     <div>
-    Search this phrase <?php echo $this->formText('query', null, array('style' => 'margin:0px')); ?>
+    Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('style' => 'margin-bottom:4px')); ?><br>
     from the corpus <?php echo $this->formSelect('corpus_id', null, null, array('1' => 'My Corpus (year)', '2' => 'My Other Corpus (month)')); ?>
     <input type="submit" value="Search">
     </div>
