@@ -23,6 +23,22 @@ class Table_NgramCorpus extends Omeka_Db_Table
         ),
     );
 
+    public function query($corpusId, $query)
+    {
+        $db = $this->getDb();
+        $sql = sprintf('
+        SELECT cn.sequence_member, cn.relative_frequency
+        FROM %s cn
+        JOIN %s n ON cn.ngram_id = n.id
+        WHERE cn.corpus_id = ?
+        AND n.ngram =  ?
+        ORDER BY cn.sequence_member',
+        $db->NgramCorpusNgram,
+        $db->NgramNgram);
+        $db->setFetchMode(Zend_Db::FETCH_NUM);
+        return $db->fetchAll($sql, array($corpusId, $query));
+    }
+
     /**
      * Does this sequence type exist?
      *
