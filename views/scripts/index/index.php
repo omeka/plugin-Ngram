@@ -17,8 +17,10 @@ jQuery(document).ready(function() {
             x: {
                 type: 'timeseries',
                 tick: {
+                    count: 8,
                     format: <?php echo $this->xTickFormat; ?>
-                }
+                },
+                padding: {left: 6},
             },
             y: {
                 label: {
@@ -27,7 +29,8 @@ jQuery(document).ready(function() {
                 },
                 tick: {
                     format: d3.format('.6%')
-                }
+                },
+                padding: {bottom: 6}
             }
         },
         tooltip: {
