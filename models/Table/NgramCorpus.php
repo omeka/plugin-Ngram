@@ -8,18 +8,46 @@ class Table_NgramCorpus extends Omeka_Db_Table
         'year' => array(
             'label' => 'Date by year',
             'validator' => 'Ngram_CorpusValidator_Year',
+            'filler' => 'Ngram_SequenceFiller_Year',
+            'graphConfig' => array(
+                'dataXFormat' => '%Y',
+                'axisXType' => 'timeseries',
+                'axisXTickCount' => 8,
+                'axisXTickFormat' => '%Y',
+            ),
         ),
         'month' => array(
             'label' => 'Date by month',
             'validator' => 'Ngram_CorpusValidator_Month',
+            'filler' => 'Ngram_SequenceFiller_Month',
+            'graphConfig' => array(
+                'dataXFormat' => '%Ym',
+                'axisXType' => 'timeseries',
+                'axisXTickCount' => 8,
+                'axisXTickFormat' => '%Y-%m',
+            ),
         ),
         'day' => array(
             'label' => 'Date by day',
             'validator' => 'Ngram_CorpusValidator_Day',
+            'filler' => 'Ngram_SequenceFiller_Day',
+            'graphConfig' => array(
+                'dataXFormat' => '%Ymd',
+                'axisXType' => 'timeseries',
+                'axisXTickCount' => 8,
+                'axisXTickFormat' => '%Y-%m-%d',
+            ),
         ),
         'numeric' => array(
             'label' => 'Numerical',
             'validator' => 'Ngram_CorpusValidator_Numeric',
+            'filler' => 'Ngram_SequenceFiller_Numeric',
+            'graphConfig' => array(
+                'dataXFormat' => null,
+                'axisXType' => 'category',
+                'axisXTickCount' => null,
+                'axisXTickFormat' => null,
+            ),
         ),
     );
 
@@ -62,6 +90,17 @@ class Table_NgramCorpus extends Omeka_Db_Table
     }
 
     /**
+     * Get the graph configuration for a sequence type.
+     *
+     * @param string $sequenceType
+     * @return array
+     */
+    public function getSequenceTypeGraphConfig($sequenceType)
+    {
+        return $this->_sequenceTypes[$sequenceType]['graphConfig'];
+    }
+
+    /**
      * Get a corpus validator by sequence type.
      *
      * @param string $sequenceType
@@ -70,6 +109,18 @@ class Table_NgramCorpus extends Omeka_Db_Table
     public function getCorpusValidator($sequenceType)
     {
         $class = $this->_sequenceTypes[$sequenceType]['validator'];
+        return class_exists($class) ? new $class : null;
+    }
+
+    /**
+     * Get a sequence filler by sequence type.
+     *
+     * @param string $sequenceType
+     * @return Ngram_SequenceFiller_SequenceFillerInterface
+     */
+    public function getSequenceFiller($sequenceType)
+    {
+        $class = $this->_sequenceTypes[$sequenceType]['filler'];
         return class_exists($class) ? new $class : null;
     }
 

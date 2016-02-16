@@ -20,61 +20,19 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
             }
         }
 
-        // Sort and define the sequence range.
+        // Sort to get accurate range start and end.
         ksort($data);
+
+        // Fill gaps in the the sequence.
         $seqMems = array_keys($data);
-        $seqRangeStart = reset($seqMems);
-        $seqRangeEnd = end($seqMems);
+        $seqFiller = $ngramCorpusTable->getSequenceFiller($corpus->sequence_type);
+        $filledSeq = $seqFiller->getFilledSequence(reset($seqMems), end($seqMems));
+        $data = $data + array_flip($filledSeq);
 
-        // Fill in range gaps and set C3 variables, according to sequence type.
-        $xFormat = null;
-        $xTickFormat = null;
-        $seqRange = array();
-        switch ($corpus->sequence_type) {
-            case 'year':
-                $xFormat = '%Y';
-                $xTickFormat = '%Y';
-                $period = new DatePeriod(
-                    DateTime::createFromFormat('Y', $seqRangeStart),
-                    new DateInterval('P1Y'),
-                    DateTime::createFromFormat('Y', $seqRangeEnd)
-                );
-                foreach ($period as $date) {
-                    $seqRange[] = $date->format('Y');
-                }
-                break;
-            case 'month':
-                $xFormat = '%Y%m';
-                $xTickFormat = '%Y-%m';
-                $period = new DatePeriod(
-                    DateTime::createFromFormat('Ym', $seqRangeStart),
-                    new DateInterval('P1M'),
-                    DateTime::createFromFormat('Ym', $seqRangeEnd)
-                );
-                foreach ($period as $date) {
-                    $seqRange[] = $date->format('Ym');
-                }
-                break;
-            case 'day':
-                $xFormat = '%Y%m%d';
-                $xTickFormat = '%Y-%m-%d';
-                $period = new DatePeriod(
-                    DateTime::createFromFormat('Ymd', $seqRangeStart),
-                    new DateInterval('P1D'),
-                    DateTime::createFromFormat('Ymd', $seqRangeEnd)
-                );
-                foreach ($period as $date) {
-                    $seqRange[] = $date->format('Ymd');
-                }
-                break;
-            case 'numeric':
-                // @todo
-                break;
-            default:
-        }
-        $data = $data + array_flip($seqRange);
+        // Sort to ensure filled sequence is ordered properly.
+        ksort($data);
 
-        // Build JSON for C3.
+        // Build JSON for C3 graph.
         $json = array();
         foreach ($data as $seqMem => $relFreqs) {
             $jsonPart = array(
@@ -91,9 +49,8 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
         }
 
         $this->view->json = $json;
-        $this->view->keysValue = $queries;
-        $this->view->xFormat = $xFormat;
-        $this->view->xTickFormat = $xTickFormat;
+        $this->view->dataKeysValue = $queries;
+        $this->view->graphConfig = $ngramCorpusTable->getSequenceTypeGraphConfig($corpus->sequence_type);
         $this->view->queries = $request->get('queries');
     }
 }

@@ -9,19 +9,19 @@ jQuery(document).ready(function() {
     var chart = c3.generate({
         bindto: '#chart',
         data: {
-            xFormat: <?php echo json_encode($this->xFormat); ?>,
+            xFormat: <?php echo json_encode($this->graphConfig['dataXFormat']); ?>,
             json: <?php echo json_encode($this->json); ?>,
             keys: {
                 x: 'x',
-                value: <?php echo json_encode($this->keysValue); ?>
+                value: <?php echo json_encode($this->dataKeysValue); ?>
             }
         },
         axis: {
             x: {
-                type: 'timeseries',
+                type: <?php echo json_encode($this->graphConfig['axisXType']); ?>,
                 tick: {
-                    count: 8,
-                    format: <?php echo json_encode($this->xTickFormat); ?>
+                    count: <?php echo json_encode($this->graphConfig['axisXTickCount']); ?>,
+                    format: <?php echo json_encode($this->graphConfig['axisXTickFormat']); ?>
                 },
                 padding: {left: 0},
             },
