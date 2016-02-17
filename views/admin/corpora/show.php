@@ -53,6 +53,8 @@ echo flash();
                     <?php echo $this->formHidden('n', 1); ?>
                     <?php echo $this->formSubmit('generate_ngrams', 'Generate Unigrams', array('class' => 'big green button')) ?>
                 </form>
+            <?php elseif ($corpus->N1Process && Process::STATUS_STARTING === $corpus->N1Process->status): ?>
+                <p>Unigram generation is starting...</p>
             <?php elseif ($corpus->N1Process && Process::STATUS_IN_PROGRESS === $corpus->N1Process->status): ?>
                 <p>Unigram generation in progress...</p>
             <?php elseif ($corpus->N1Process && Process::STATUS_COMPLETED === $corpus->N1Process->status): ?>
@@ -65,6 +67,8 @@ echo flash();
                     <?php echo $this->formHidden('n', 2); ?>
                     <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button')) ?>
                 </form>
+            <?php elseif ($corpus->N2Process && Process::STATUS_STARTING === $corpus->N2Process->status): ?>
+                <p>Bigram generation starting...</p>
             <?php elseif ($corpus->N2Process && Process::STATUS_IN_PROGRESS === $corpus->N2Process->status): ?>
                 <p>Bigram generation in progress...</p>
             <?php elseif ($corpus->N2Process && Process::STATUS_COMPLETED === $corpus->N2Process->status): ?>
