@@ -15,7 +15,8 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
             // Query each string and combine the results.
             $data = array();
             foreach ($queries as $query) {
-                $results = $ngramCorpusTable->query($corpusId, $query);
+                $results = $ngramCorpusTable->query($corpusId, $query,
+                    $request->get('start'), $request->get('end'));
                 foreach ($results as $result) {
                     $data[$result[0]][$query] = $result[1];
                 }
@@ -55,6 +56,8 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
         }
 
         $this->view->queries = $request->get('queries');
+        $this->view->start = $request->get('start');
+        $this->view->end = $request->get('end');
         $this->view->corpusId = $request->get('corpus_id');
         $this->view->corporaOptions = $ngramCorpusTable->getCorporaForSelect();
     }
