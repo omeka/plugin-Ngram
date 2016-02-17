@@ -48,12 +48,10 @@ jQuery(document).ready(function() {
 });
 </script>
 <h1>Ngram Viewer</h1>
-<form>
-    <div>
+<form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('style' => 'margin-bottom:4px')); ?><br>
-    from the corpus <?php echo $this->formSelect('corpus_id', null, null, array('1' => 'My Corpus (year)', '2' => 'My Other Corpus (month)')); ?>
-    <input type="submit" value="Search">
-    </div>
+    from the corpus <?php echo $this->formSelect('corpus_id', $this->corpusId, null, $this->corporaOptions); ?>
+    <?php echo $this->formSubmit('submit', 'Search'); ?>
 </form>
 <br>
 <div id="chart"></div>

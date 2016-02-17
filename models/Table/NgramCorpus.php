@@ -139,44 +139,42 @@ class Table_NgramCorpus extends Omeka_Db_Table
     }
 
     /**
-     * Find all elements and their element sets.
-     *
-     * @return array
-     */
-    public function findElements()
-    {
-        $db = $this->getDb();
-        $select = $db->select()
-            ->from(
-                array('element_sets' => $db->ElementSet),
-                array('element_set_name' => 'element_sets.name')
-            )->join(
-                array('elements' => $db->Element),
-                'element_sets.id = elements.element_set_id',
-                array('element_id' =>'elements.id',
-                'element_name' => 'elements.name')
-            )->joinLeft(
-                array('item_types_elements' => $db->ItemTypesElements),
-                'elements.id = item_types_elements.element_id',
-                array()
-            )->where('element_sets.record_type IS NULL OR element_sets.record_type = "Item"')
-            ->order(array('element_sets.name', 'elements.name'));
-        return $db->fetchAll($select);
-    }
-
-    /**
      * Get elements array used as select options.
      *
      * @return array
      */
     public function getElementsForSelect()
     {
+        $db = $this->getDb();
+        $sql = sprintf('
+        SELECT es.name element_set_name, e.id element_id, e.name element_name
+        FROM %s es
+        JOIN %s e ON es.id = e.element_set_id
+        LEFT JOIN %s ite ON e.id = ite.element_id
+        WHERE es.record_type IS NULL OR es.record_type = "Item"
+        ORDER BY es.name, e.name',
+        $db->ElementSet,
+        $db->Element,
+        $db->ItemTypesElements);
+
         $options = array('' => 'Select Below');
-        foreach ($this->findElements() as $element) {
+        foreach ($db->fetchAll($sql) as $element) {
             $optGroup = __($element['element_set_name']);
             $value = __($element['element_name']);
             $options[$optGroup][$element['element_id']] = $value;
         }
         return $options;
+    }
+
+    /**
+     * Get corpora array used as select options.
+     *
+     * @return array
+     */
+    public function getCorporaForSelect()
+    {
+        $db = $this->getDb();
+        $sql = sprintf('SELECT id, name FROM %s', $db->NgramCorpus);
+        return $db->fetchPairs($sql);
     }
 }
