@@ -4,6 +4,7 @@ queue_js_url('https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js');
 queue_js_url('https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js');
 echo head(array('title' => 'Ngram Viewer'));
 ?>
+<?php if (isset($this->json)): ?>
 <script>
 jQuery(document).ready(function() {
     var chart = c3.generate({
@@ -47,6 +48,7 @@ jQuery(document).ready(function() {
     })
 });
 </script>
+<?php endif; ?>
 <h1>Ngram Viewer</h1>
 <form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 40, 'style' => 'margin-bottom:4px')); ?><br>
