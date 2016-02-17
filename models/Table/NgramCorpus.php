@@ -21,7 +21,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
             'validator' => 'Ngram_CorpusValidator_Month',
             'filler' => 'Ngram_SequenceFiller_Month',
             'graphConfig' => array(
-                'dataXFormat' => '%Ym',
+                'dataXFormat' => '%Y%m',
                 'axisXType' => 'timeseries',
                 'axisXTickCount' => 8,
                 'axisXTickFormat' => '%Y-%m',
@@ -32,7 +32,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
             'validator' => 'Ngram_CorpusValidator_Day',
             'filler' => 'Ngram_SequenceFiller_Day',
             'graphConfig' => array(
-                'dataXFormat' => '%Ymd',
+                'dataXFormat' => '%Y%m%d',
                 'axisXType' => 'timeseries',
                 'axisXTickCount' => 8,
                 'axisXTickFormat' => '%Y-%m-%d',
