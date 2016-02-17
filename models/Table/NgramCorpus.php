@@ -51,20 +51,26 @@ class Table_NgramCorpus extends Omeka_Db_Table
         ),
     );
 
-    public function query($corpusId, $query)
+    /**
+     * Query a corpus ngram.
+     *
+     * @param int $corpusId
+     * @param string $ngram
+     */
+    public function query($corpusId, $ngram)
     {
         $db = $this->getDb();
-        $sql = sprintf('
-        SELECT cn.sequence_member, cn.relative_frequency
-        FROM %s cn
-        JOIN %s n ON cn.ngram_id = n.id
-        WHERE cn.corpus_id = ?
-        AND n.ngram =  ?
-        ORDER BY cn.sequence_member',
-        $db->NgramCorpusNgram,
-        $db->NgramNgram);
+        $select = $db->select()
+            ->from(
+                array('cn' => $db->NgramCorpusNgram),
+                array('cn.sequence_member', 'cn.relative_frequency')
+            )
+            ->join(array('n' => $db->NgramNgram), 'cn.ngram_id = n.id', array())
+            ->where('cn.corpus_id = ?', $corpusId)
+            ->where('n.ngram =  ?', $ngram)
+            ->order('cn.sequence_member');
         $db->setFetchMode(Zend_Db::FETCH_NUM);
-        return $db->fetchAll($sql, array($corpusId, $query));
+        return $db->fetchAll($select);
     }
 
     /**
