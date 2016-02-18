@@ -100,6 +100,10 @@ SQL
             $db->query("TRUNCATE TABLE `{$db->prefix}ngram_item_ngrams`");
         }
         set_option('ngram_text_element_id', $newId);
+
+        if ($args['post']['reset_processes']) {
+            get_db()->getTable('NgramCorpus')->resetProcesses();
+        }
     }
 
     public function hookDefineAcl($args)

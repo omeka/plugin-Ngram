@@ -62,7 +62,7 @@ echo flash();
             <?php elseif ($corpus->N1Process && Process::STATUS_ERROR === $corpus->N1Process->status): ?>
                 <p class="error">Error generating unigrams.</p>
             <?php else: ?>
-                <p>Cannot generate unigrams now.</p>
+                <p class="alert">Cannot generate unigrams now.</p>
             <?php endif; ?>
 
             <?php if ($corpus->canGenerateN2grams()): ?>
@@ -79,7 +79,7 @@ echo flash();
             <?php elseif ($corpus->N2Process && Process::STATUS_ERROR === $corpus->N2Process->status): ?>
                 <p class="error">Error generating bigrams.</p>
             <?php else: ?>
-                <p>Cannot generate bigrams now.</p>
+                <p class="alert">Cannot generate bigrams now.</p>
             <?php endif; ?>
         <?php endif; ?>
     </div>

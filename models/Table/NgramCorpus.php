@@ -218,4 +218,37 @@ class Table_NgramCorpus extends Omeka_Db_Table
             Process::STATUS_COMPLETED
         ));
     }
+
+    /**
+     * Reset problem ngram generation processes.
+     *
+     * This resets hanging and error processes, allowing users to re-generate
+     * ngrams if something goes wrong.
+     *
+     * Becuase of our use of database transactions, we can assume that hanging
+     * or error processes result in zero affected rows in the corpus_ngram
+     * table, so there's no need to delete anything when resolving processes.
+     */
+    public function resetProcesses()
+    {
+        $corpora = $this->getDb()->getTable('NgramCorpus')->findAll();
+        foreach ($corpora as $corpus) {
+            $processVars = array(
+                array('N1Process', 'n1_process_id'),
+                array('N2Process', 'n2_process_id'),
+            );
+            foreach ($processVars as $processVar) {
+                $process = $corpus->$processVar[0];
+                if (Process::STATUS_ERROR === $process->status) {
+                    $corpus->$processVar[1] = null;
+                } elseif (Process::STATUS_STARTING === $process->status
+                    || Process::STATUS_IN_PROGRESS === $process->status
+                ) {
+                    $corpus->$processVar[1] = null;
+                    Omeka_Job_Process_Dispatcher::stopProcess($process);
+                }
+            }
+            $corpus->save(false);
+        }
+    }
 }
