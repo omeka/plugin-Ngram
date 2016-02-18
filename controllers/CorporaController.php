@@ -148,11 +148,16 @@ class Ngram_CorporaController extends Omeka_Controller_AbstractActionController
 
     protected function _getAddSuccessMessage($record)
     {
-        return sprintf('The "%s" corpus was sucessfully added.', $record->name);
+        return sprintf('The corpus "%s" was sucessfully added.', $record->name);
     }
 
     protected function _getEditSuccessMessage($record)
     {
-        return sprintf('The "%s" corpus was sucessfully edited.', $record->name);;
+        return sprintf('The corpus "%s" was sucessfully edited.', $record->name);;
+    }
+
+    protected function _getDeleteConfirmMessage($record)
+    {
+        return sprintf('This will delete the corpus "%s" and all its associated ngrams.', $record->name);
     }
 }

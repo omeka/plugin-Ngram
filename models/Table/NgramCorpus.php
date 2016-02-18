@@ -251,4 +251,16 @@ class Table_NgramCorpus extends Omeka_Db_Table
             $corpus->save(false);
         }
     }
+
+    /**
+     * Delete corpus ngrams.
+     *
+     * @param int $corpusId
+     */
+    public function deleteCorpusNgrams($corpusId)
+    {
+        $db = $this->getDb();
+        $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusNgram);
+        $db->query($sql, $corpusId);
+    }
 }

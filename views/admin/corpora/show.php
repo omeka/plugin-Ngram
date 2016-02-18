@@ -42,6 +42,7 @@ echo flash();
         <?php else: ?>
             <p>The corpus items have been validated. No further edits are allowed.</p>
         <?php endif; ?>
+        <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete Corpus</a>
     </div>
     <div id="save" class="panel">
         <h4>Generate Ngrams</h4>

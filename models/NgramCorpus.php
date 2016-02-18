@@ -224,4 +224,9 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
             $this->items_pool = json_encode($itemIds);
         }
     }
+
+    protected function beforeDelete()
+    {
+        $this->getTable()->deleteCorpusNgrams($this->id);
+    }
 }
