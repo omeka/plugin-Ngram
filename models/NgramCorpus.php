@@ -129,7 +129,8 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canEdit()
     {
-        return $this->hasValidTextElement() && !$this->ItemsCorpus;
+        return $this->hasValidTextElement()
+            && !$this->ItemsCorpus;
     }
 
     /**
@@ -139,7 +140,9 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canValidateItems()
     {
-        return $this->hasValidTextElement() && $this->ItemsPool && !$this->ItemsCorpus;
+        return $this->hasValidTextElement()
+            && $this->ItemsPool
+            && !$this->ItemsCorpus;
     }
 
     /**
@@ -149,7 +152,10 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canGenerateN1grams()
     {
-        return $this->hasValidTextElement() && $this->ItemsCorpus && !$this->N1Process;
+        return $this->getTable()->processIsAvailable()
+            && $this->hasValidTextElement()
+            && $this->ItemsCorpus
+            && !$this->N1Process;
     }
 
     /**
@@ -159,12 +165,9 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
      */
     public function canGenerateN2grams()
     {
-        return $this->hasValidTextElement()
+        return $this->getTable()->processIsAvailable()
+            && $this->hasValidTextElement()
             && $this->ItemsCorpus
-            && (
-                $this->N1Process
-                && Process::STATUS_COMPLETED === $this->N1Process->status
-            )
             && !$this->N2Process;
     }
 

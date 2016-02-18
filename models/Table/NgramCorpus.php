@@ -191,4 +191,31 @@ class Table_NgramCorpus extends Omeka_Db_Table
         $sql = sprintf('SELECT id, name FROM %s', $db->NgramCorpus);
         return $db->fetchPairs($sql);
     }
+
+    /**
+     * Is a ngram generation process available?
+     *
+     * Users can run a process only when no other ngram generation process
+     * *in any corpus* is currently being run.
+     *
+     * @return bool
+     */
+    public function processIsAvailable()
+    {
+        $db = $this->getDb();
+        $sql = sprintf('
+        SELECT 1
+        FROM omeka_ngram_corpus nc
+        LEFT JOIN omeka_processes p1 ON nc.n1_process_id = p1.id
+        LEFT JOIN omeka_processes p2 ON nc.n2_process_id = p2.id
+        WHERE p1.status != ?
+        OR p2.status != ?',
+        $db->NgramCorpus,
+        $db->Process,
+        $db->Process);
+        return !$db->fetchOne($sql, array(
+            Process::STATUS_COMPLETED,
+            Process::STATUS_COMPLETED
+        ));
+    }
 }

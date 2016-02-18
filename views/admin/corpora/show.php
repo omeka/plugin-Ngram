@@ -59,9 +59,12 @@ echo flash();
                 <p>Unigram generation in progress...</p>
             <?php elseif ($corpus->N1Process && Process::STATUS_COMPLETED === $corpus->N1Process->status): ?>
                 <p class="success">Unigram generation completed.</p>
-            <?php else: ?>
+            <?php elseif ($corpus->N1Process && Process::STATUS_ERROR === $corpus->N1Process->status): ?>
                 <p class="error">Error generating unigrams.</p>
+            <?php else: ?>
+                <p>Cannot generate unigrams now.</p>
             <?php endif; ?>
+
             <?php if ($corpus->canGenerateN2grams()): ?>
                 <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
                     <?php echo $this->formHidden('n', 2); ?>
@@ -73,8 +76,10 @@ echo flash();
                 <p>Bigram generation in progress...</p>
             <?php elseif ($corpus->N2Process && Process::STATUS_COMPLETED === $corpus->N2Process->status): ?>
                 <p class="success">Bigram generation completed.</p>
-            <?php elseif ($corpus->N2Process): ?>
+            <?php elseif ($corpus->N2Process && Process::STATUS_ERROR === $corpus->N2Process->status): ?>
                 <p class="error">Error generating bigrams.</p>
+            <?php else: ?>
+                <p>Cannot generate bigrams now.</p>
             <?php endif; ?>
         <?php endif; ?>
     </div>
