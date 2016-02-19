@@ -195,8 +195,8 @@ class Table_NgramCorpus extends Omeka_Db_Table
     /**
      * Is a ngram generation process available?
      *
-     * Users can run a process only when no other ngram generation process
-     * *in any corpus* is currently being run.
+     * A ngram generation process is available only when no other process *in
+     * any corpus* is currently running.
      *
      * @return bool
      */

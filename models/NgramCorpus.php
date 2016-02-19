@@ -134,6 +134,18 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
+     * Can a user delete this corpus?
+     *
+     * A user cannot delete a corpus if a ngram generation process is running.
+     *
+     * @return bool
+     */
+    public function canDelete()
+    {
+        return $this->getTable()->processIsAvailable();
+    }
+
+    /**
      * Can a user validate items?
      *
      * @return bool

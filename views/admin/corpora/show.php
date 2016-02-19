@@ -42,7 +42,9 @@ echo flash();
         <?php else: ?>
             <p>The corpus items have been validated. No further edits are allowed.</p>
         <?php endif; ?>
-        <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete Corpus</a>
+        <?php if ($corpus->canDelete()): ?>
+            <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete Corpus</a>
+        <?php endif; ?>
     </div>
     <div id="save" class="panel">
         <h4>Generate Ngrams</h4>
@@ -88,6 +90,9 @@ echo flash();
     <div class="panel">
         <h4>Corpus Locked</h4>
         <p class="error">This corpus is locked. The corpus text element does not match the one currently set in plugin configuration.</p>
+        <?php if ($corpus->canDelete()): ?>
+            <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete Corpus</a>
+        <?php endif; ?>
     </div>
     <?php endif; ?>
     <div class="panel">
