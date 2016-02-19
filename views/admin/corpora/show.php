@@ -33,7 +33,7 @@ echo flash();
 <section class="three columns omega">
     <?php if ($corpus->hasValidTextElement()): ?>
     <div id="save" class="panel">
-        <h4>Edit Corpus</h4>
+        <h4>Manage Corpus</h4>
         <?php if ($corpus->canEdit()): ?>
             <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit Corpus</a>
             <?php if ($corpus->canValidateItems()): ?>
