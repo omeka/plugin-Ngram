@@ -22,37 +22,39 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
                 }
             }
 
-            // Sort to get accurate range start and end.
-            ksort($data);
+            if ($data) {
+                // Sort to get accurate range start and end.
+                ksort($data);
 
-            // Fill gaps in the the sequence.
-            $seqMems = array_keys($data);
-            $seqFiller = $ngramCorpusTable->getSequenceFiller($corpus->sequence_type);
-            $filledSeq = $seqFiller->getFilledSequence(reset($seqMems), end($seqMems));
-            $data = $data + array_flip($filledSeq);
+                // Fill gaps in the the sequence.
+                $seqMems = array_keys($data);
+                $seqFiller = $ngramCorpusTable->getSequenceFiller($corpus->sequence_type);
+                $filledSeq = $seqFiller->getFilledSequence(reset($seqMems), end($seqMems));
+                $data = $data + array_flip($filledSeq);
 
-            // Sort to ensure filled sequence is ordered properly.
-            ksort($data);
+                // Sort to ensure filled sequence is ordered properly.
+                ksort($data);
 
-            // Build JSON for C3 graph.
-            $json = array();
-            foreach ($data as $seqMem => $relFreqs) {
-                $jsonPart = array(
-                    'x' => (string) $seqMem,
-                );
-                foreach ($queries as $query) {
-                    if (isset($relFreqs[$query])) {
-                        $jsonPart[$query] = $relFreqs[$query];
-                    } else {
-                        $jsonPart[$query] = 0;
+                // Build JSON for C3 graph.
+                $json = array();
+                foreach ($data as $seqMem => $relFreqs) {
+                    $jsonPart = array(
+                        'x' => (string) $seqMem,
+                    );
+                    foreach ($queries as $query) {
+                        if (isset($relFreqs[$query])) {
+                            $jsonPart[$query] = $relFreqs[$query];
+                        } else {
+                            $jsonPart[$query] = 0;
+                        }
                     }
+                    $json[] = $jsonPart;
                 }
-                $json[] = $jsonPart;
-            }
 
-            $this->view->json = $json;
-            $this->view->dataKeysValue = $queries;
-            $this->view->graphConfig = $ngramCorpusTable->getSequenceTypeGraphConfig($corpus->sequence_type);
+                $this->view->json = $json;
+                $this->view->dataKeysValue = $queries;
+                $this->view->graphConfig = $ngramCorpusTable->getSequenceTypeGraphConfig($corpus->sequence_type);
+            }
         }
 
         $this->view->queries = $request->get('queries');

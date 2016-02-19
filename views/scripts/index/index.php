@@ -57,6 +57,8 @@ jQuery(document).ready(function() {
     from the corpus <?php echo $this->formSelect('corpus_id', $this->corpusId, null, $this->corporaOptions); ?>
     <?php echo $this->formSubmit('submit', 'Search'); ?>
 </form>
-<br>
+<?php if ($this->queries && !isset($this->json)): ?>
+<p>No ngrams to plot.</p>
+<?php endif; ?>
 <div id="chart"></div>
 <?php echo foot(); ?>
