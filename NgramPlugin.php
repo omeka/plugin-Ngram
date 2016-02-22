@@ -108,7 +108,9 @@ SQL
 
     public function hookDefineAcl($args)
     {
-        $args['acl']->addResource('Ngram_Index');
+        $acl = $args['acl'];
+        $acl->addResource('Ngram_Index');
+        $acl->allow(null, 'Ngram_Index');
     }
 
     public function filterAdminNavigationMain($nav)
