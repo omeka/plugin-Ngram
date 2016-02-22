@@ -19,17 +19,18 @@ jQuery(window).load(function () {
 
 <h2><?php echo $corpus->name; ?> (<?php echo count($corpus->ItemsPool); ?> total items)</h2>
 
-<ul>
-    <li>Sequence Type: <?php echo $corpus->getSequenceTypeLabel(); ?></li>
-    <li>Sequence Range: <?php echo $corpus->sequence_range; ?></li>
-</ul>
-
+<p>Review the valid, invalid, and out of range items below. If necessary, you may
+edit items to correct their sequence texts and reload this page to update the lists.
+Once you've validated the items, click the button below:</p>
+<form method="post">
+    <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
+    <span class="alert"><strong>CAUTION</strong>: you will not be able to edit or
+    re-validate this corpus after you accept.</span>
+</form>
+<hr>
 <div id="valid-items">
 <h3>Valid Items (<?php echo $validCount; ?>)</h3>
 <?php if ($validCount): ?>
-<form method="post">
-    <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
-</form>
 <table>
 <thead>
     <tr>

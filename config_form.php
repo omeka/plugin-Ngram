@@ -12,7 +12,7 @@
                 array('id' => 'text_element_id'),
                 $elementOptions
             ) ?>
-            <p class="error"><strong>WARNING</strong>: Changing the text element
+            <p class="alert"><strong>CAUTION</strong>: Changing the text element
             after it's been set may lock existing corpora. You will not be able
             to edit, validate items, or generate ngrams for corpora set to a
             different text element. Existing corpus ngrams are not affected.</p>
