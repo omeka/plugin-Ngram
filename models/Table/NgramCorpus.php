@@ -51,6 +51,11 @@ class Table_NgramCorpus extends Omeka_Db_Table
         ),
     );
 
+    protected function _getColumnPairs()
+    {
+        return array('id', 'name');
+    }
+
     /**
      * Query a corpus ngram.
      *
@@ -178,18 +183,6 @@ class Table_NgramCorpus extends Omeka_Db_Table
             $options[$optGroup][$element['element_id']] = $value;
         }
         return $options;
-    }
-
-    /**
-     * Get corpora array used as select options.
-     *
-     * @return array
-     */
-    public function getCorporaForSelect()
-    {
-        $db = $this->getDb();
-        $sql = sprintf('SELECT id, name FROM %s', $db->NgramCorpus);
-        return $db->fetchPairs($sql);
     }
 
     /**

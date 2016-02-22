@@ -61,6 +61,6 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
         $this->view->start = $request->get('start');
         $this->view->end = $request->get('end');
         $this->view->corpusId = $request->get('corpus_id');
-        $this->view->corporaOptions = $ngramCorpusTable->getCorporaForSelect();
+        $this->view->corporaOptions = $ngramCorpusTable->findPairsForSelectForm();
     }
 }
