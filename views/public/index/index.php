@@ -1,8 +1,8 @@
 <?php
-queue_css_url('https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css');
-queue_js_url('https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.14/d3.min.js');
-queue_js_url('https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js');
 if ($this->dataJson) {
+    queue_css_file('c3/0.4.10/c3.min');
+    queue_js_file('d3/3.5.16/d3.min');
+    queue_js_file('c3/0.4.10/c3.min');
     queue_js_file('ngram-graph');
 }
 echo head(array('title' => 'Ngram Viewer'));
