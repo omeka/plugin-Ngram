@@ -11,6 +11,15 @@ $textElementSetName = $textElement->getElementSet()->name;
             <?php echo $this->formText('name', $corpus->name); ?>
         </div>
     </div>
+    <div class="field">
+        <div class="two columns alpha">
+            <label for="name">Public</label>
+        </div>
+        <div class="inputs five columns omega">
+            <p class="explanation">Make this corpus publicly available?</p>
+            <?php echo $this->formCheckbox('public', (bool) $corpus->public, null, array('checked' => true)); ?>
+        </div>
+    </div>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
     <div class="field">
         <div class="two columns alpha">

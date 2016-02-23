@@ -3,6 +3,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
 {
     public $id;
     public $name;
+    public $public = 0;
     public $query;
     public $text_element_id;
     public $sequence_element_id;
