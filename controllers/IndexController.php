@@ -51,7 +51,7 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
                     $json[] = $jsonPart;
                 }
 
-                $this->view->json = $json;
+                $this->view->dataJson = $json;
                 $this->view->dataKeysValue = $queries;
                 $this->view->graphConfig = $ngramCorpusTable->getSequenceTypeGraphConfig($corpus->sequence_type);
             }
