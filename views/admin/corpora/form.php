@@ -25,7 +25,7 @@ $textElementSetName = $textElement->getElementSet()->name;
     <legend>Configure Item Pool</legend>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
     <p>The item pool is the set of items from which you will select a corpus. You
-    will be able to configure the item pool until you accept items on the "Validate
+    may continue to adjust the item pool until you accept items on the "Validate
     Items" page.</p>
     <div class="field">
         <div class="two columns alpha">
