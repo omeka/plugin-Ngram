@@ -4,8 +4,8 @@
             <label for="text_element_id">Text Element</label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">Select an element that contains the text from
-            which to derive ngrams.</p>
+            <p class="explanation">Select the element that contains the text from
+            which to derive ngrams. Items without this element are ignored.</p>
             <?php echo $view->formSelect(
                 'text_element_id',
                 get_option('ngram_text_element_id'),
@@ -13,9 +13,9 @@
                 $elementOptions
             ) ?>
             <p class="alert"><strong>CAUTION</strong>: Changing the text element
-            after it's been set may lock existing corpora. You will not be able
-            to edit, validate items, or generate ngrams for corpora set to a
-            different text element. Existing corpus ngrams are not affected.</p>
+            after it's been set will prevent you from validating items and generating
+            ngrams for corpora set to a different text element. Existing corpus
+            ngrams are not affected.</p>
         </div>
     </div>
     <div class="field">
@@ -24,8 +24,7 @@
         </div>
         <div class="inputs five columns omega">
             <p class="explanation">Check this box to reset ngram generation
-            processes that are hanging or showing errors. After submitting this
-            form you may re-generate ngrams that are causing problems.</p>
+            processes that are hanging or showing errors.</p>
             <?php echo $view->formCheckbox(
                 'reset_processes',
                 null,

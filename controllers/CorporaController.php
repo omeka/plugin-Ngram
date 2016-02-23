@@ -56,7 +56,10 @@ class Ngram_CorporaController extends Omeka_Controller_AbstractActionController
             $processProperty = "n{$n}_process_id";
             $corpus->$processProperty = $process->id;
             $corpus->save(true);
-            $this->_helper->flashMessenger('The corpus ngrams are now being generated. This may take some time.', 'success');
+            $this->_helper->flashMessenger(
+            'The corpus ngrams are now being generated. This may take some time. '
+            . 'Feel free to navigate away from this page and close your browser. '
+            . 'Refresh this page to see if the process is complete.', 'success');
             $this->_helper->redirector('show', null, null, array('id' => $corpus->id));
         }
         $this->_helper->redirector('browse');
@@ -100,7 +103,7 @@ class Ngram_CorporaController extends Omeka_Controller_AbstractActionController
         if ($request->isPost()) {
             $corpus->items_corpus = json_encode($validItems);
             $corpus->save(false);
-            $this->_helper->flashMessenger('The valid items were successfully accepted.', 'success');
+            $this->_helper->flashMessenger('The valid items were successfully accepted. You may now generate unigrams and bigrams.', 'success');
             $this->_helper->redirector('show', null, null, array('id' => $corpus->id));
         }
 

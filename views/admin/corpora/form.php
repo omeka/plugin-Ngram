@@ -20,14 +20,16 @@ $textElementSetName = $textElement->getElementSet()->name;
             <?php echo $this->formCheckbox('public', (bool) $corpus->public, null, array('checked' => true)); ?>
         </div>
     </div>
+    <fieldset>
+    <legend>Configure Item Pool</legend>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
     <div class="field">
         <div class="two columns alpha">
             <label for="sequence_element_id" class="required">Sequence Element</label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">Select the element that contains the sequence text 
-            for every item of this corpus. Items without this element are ignored.</p>
+            <p class="explanation">Select the element (such as a date or numeric field)
+            from which to derive a sequence. Items without this element are ignored.</p>
             <?php echo $this->formSelect(
                 'sequence_element_id',
                 $corpus->sequence_element_id,
@@ -67,11 +69,13 @@ $textElementSetName = $textElement->getElementSet()->name;
             <label for="query">Item Pool Query</label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">Filter the item pool (the initial, non-validated
-            pool of items) using a URL query string that comes as a result of submitting
-            an advanced item search.</p>
+            <p class="explanation">Filter the item pool using a URL query string
+            that comes as a result of submitting an advanced item search.</p>
             <?php echo $this->formText('query', $corpus->query); ?>
         </div>
     </div>
+    <?php else: ?>
+    <p class="alert">The item pool is locked.</p>
     <?php endif; ?>
+    </fieldset>
 </section>

@@ -19,13 +19,13 @@ jQuery(window).load(function () {
 
 <h2><?php echo $corpus->name; ?> (<?php echo count($corpus->ItemsPool); ?> total items)</h2>
 
-<p>Review the valid, invalid, and out of range items below. If necessary, you may
+<p>Review any valid, invalid, and out of range items below. If necessary, you may
 edit items to correct their sequence texts and reload this page to update the lists.
-Once you've validated the items, click the button below:</p>
+You will be able to generate ngrams once you've accepted the valid items.</p>
 <form method="post">
     <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
-    <span class="alert"><strong>CAUTION</strong>: you will not be able to re-validate
-    this corpus after you accept.</span>
+    <span class="alert"><strong>CAUTION</strong>: you will not be able to configure
+    the item pool or re-validate after you accept.</span>
 </form>
 <hr>
 <div id="valid-items">
@@ -42,7 +42,7 @@ Once you've validated the items, click the button below:</p>
 <tbody>
     <?php foreach ($validItems as $id => $item): ?>
     <tr>
-        <td><a href="<?php echo url(array('controller' => 'items', 'action' => 'edit', 'id' => $id), 'id'); ?>"><?php echo $id; ?></a></td>
+        <td><a target="_blank" href="<?php echo url(array('controller' => 'items', 'action' => 'edit', 'id' => $id), 'id'); ?>"><?php echo $id; ?></a></td>
         <td><?php echo $item['text']; ?></td>
         <td><kbd><?php echo $item['member']; ?></kbd></td>
     </tr>
@@ -67,7 +67,7 @@ Once you've validated the items, click the button below:</p>
 <tbody>
     <?php foreach ($invalidItems as $id => $sequenceText): ?>
     <tr>
-        <td><a href="<?php echo url(array('controller' => 'items', 'action' => 'edit', 'id' => $id), 'id'); ?>"><?php echo $id; ?></a></td>
+        <td><a target="_blank" href="<?php echo url(array('controller' => 'items', 'action' => 'edit', 'id' => $id), 'id'); ?>"><?php echo $id; ?></a></td>
         <td><?php echo $sequenceText; ?></td>
     </tr>
     <?php endforeach; ?>
@@ -92,7 +92,7 @@ Once you've validated the items, click the button below:</p>
 <tbody>
     <?php foreach ($outOfRangeItems as $id => $item): ?>
     <tr>
-        <td><a href="<?php echo url(array('controller' => 'items', 'action' => 'edit', 'id' => $id), 'id'); ?>"><?php echo $id; ?></a></td>
+        <td><a target="_blank" href="<?php echo url(array('controller' => 'items', 'action' => 'edit', 'id' => $id), 'id'); ?>"><?php echo $id; ?></a></td>
         <td><?php echo $item['text']; ?></td>
         <td><kbd><?php echo $item['member']; ?></kbd></td>
     </tr>
