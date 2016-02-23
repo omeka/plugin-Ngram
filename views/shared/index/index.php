@@ -7,11 +7,10 @@ if ($this->dataJson) {
 }
 echo head(array('title' => 'Ngram Viewer'));
 ?>
-<h1>Ngram Viewer</h1>
 <form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 40, 'style' => 'margin-bottom:4px')); ?><br>
     between <?php echo $this->formText('start', $this->start, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
-    and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px')); ?><br>
+    and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
     from the corpus <?php echo $this->formSelect('corpus_id', $this->corpusId, null, $this->corporaOptions); ?>
     <?php echo $this->formSubmit('submit', 'Search'); ?>
 </form>

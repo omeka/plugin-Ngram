@@ -6,7 +6,8 @@ echo flash();
 <?php if ($total_results): ?>
 
 <div class="table-actions">
-    <a href="<?php echo html_escape(url(array('action' => 'add'))); ?>" class="small green button">Add a Corpus</a>
+    <a href="<?php echo url(array('action' => 'add')); ?>" class="small green button">Add a Corpus</a>
+    <a href="<?php echo url(array('controller' => 'index')); ?>" class="small blue button">Ngram Viewer</a>
 </div>
 
 <table>
@@ -51,7 +52,7 @@ $sequenceElementSetName = $sequenceElement->getElementSet()->name;
 
 <h2>You have no corpora.</h2>
 <p>Get started by adding your first corpus.</p>
-<a href="<?php echo html_escape(url(array('action' => 'add'))); ?>" class="add big green button">Add a Corpus</a>
+<a href="<?php echo url(array('action' => 'add')); ?>" class="add big green button">Add a Corpus</a>
 <?php endif; ?>
 
 <?php echo foot(); ?>
