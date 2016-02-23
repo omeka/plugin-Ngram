@@ -24,8 +24,8 @@ edit items to correct their sequence texts and reload this page to update the li
 Once you've validated the items, click the button below:</p>
 <form method="post">
     <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
-    <span class="alert"><strong>CAUTION</strong>: you will not be able to edit or
-    re-validate this corpus after you accept.</span>
+    <span class="alert"><strong>CAUTION</strong>: you will not be able to re-validate
+    this corpus after you accept.</span>
 </form>
 <hr>
 <div id="valid-items">

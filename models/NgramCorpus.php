@@ -121,19 +121,6 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
-     * Can a user edit this corpus?
-     *
-     * A user cannot edit a corpus if the items have been validated.
-     *
-     * @return bool
-     */
-    public function canEdit()
-    {
-        return $this->hasValidTextElement()
-            && !$this->ItemsCorpus;
-    }
-
-    /**
      * Can a user delete this corpus?
      *
      * A user cannot delete a corpus if a ngram generation process is running.

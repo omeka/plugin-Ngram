@@ -31,70 +31,57 @@ echo flash();
 </section>
 
 <section class="three columns omega">
-    <?php if ($corpus->hasValidTextElement()): ?>
     <div id="save" class="panel">
         <h4>Manage Corpus</h4>
-        <?php if ($corpus->canEdit()): ?>
-            <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit Corpus</a>
-            <?php if ($corpus->canValidateItems()): ?>
-                <a href="<?php echo $corpus->getRecordUrl('validate'); ?>" class="big green button">Validate Items</a>
-            <?php endif; ?>
-        <?php else: ?>
-            <p>The corpus items have been validated. No further edits are allowed.</p>
-        <?php endif; ?>
+        <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit</a>
         <?php if ($corpus->canDelete()): ?>
-            <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete Corpus</a>
-        <?php endif; ?>
-    </div>
-    <div id="save" class="panel">
-        <h4>Generate Ngrams</h4>
-        <?php if ($corpus->canEdit()): ?>
-            <p>Cannot generate ngrams until items have been validated.</p>
+            <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete</a>
         <?php else: ?>
-            <?php if ($corpus->canGenerateN1grams()): ?>
-                <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
-                    <?php echo $this->formHidden('n', 1); ?>
-                    <?php echo $this->formSubmit('generate_ngrams', 'Generate Unigrams', array('class' => 'big green button')) ?>
-                </form>
-            <?php elseif ($corpus->N1Process && Process::STATUS_STARTING === $corpus->N1Process->status): ?>
-                <p>Unigram generation is starting...</p>
-            <?php elseif ($corpus->N1Process && Process::STATUS_IN_PROGRESS === $corpus->N1Process->status): ?>
-                <p>Unigram generation in progress...</p>
-            <?php elseif ($corpus->N1Process && Process::STATUS_COMPLETED === $corpus->N1Process->status): ?>
-                <p class="success">Unigram generation completed.</p>
-            <?php elseif ($corpus->N1Process && Process::STATUS_ERROR === $corpus->N1Process->status): ?>
-                <p class="error">Error generating unigrams.</p>
-            <?php else: ?>
-                <p class="alert">Cannot generate unigrams now.</p>
-            <?php endif; ?>
-
-            <?php if ($corpus->canGenerateN2grams()): ?>
-                <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
-                    <?php echo $this->formHidden('n', 2); ?>
-                    <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button')) ?>
-                </form>
-            <?php elseif ($corpus->N2Process && Process::STATUS_STARTING === $corpus->N2Process->status): ?>
-                <p>Bigram generation starting...</p>
-            <?php elseif ($corpus->N2Process && Process::STATUS_IN_PROGRESS === $corpus->N2Process->status): ?>
-                <p>Bigram generation in progress...</p>
-            <?php elseif ($corpus->N2Process && Process::STATUS_COMPLETED === $corpus->N2Process->status): ?>
-                <p class="success">Bigram generation completed.</p>
-            <?php elseif ($corpus->N2Process && Process::STATUS_ERROR === $corpus->N2Process->status): ?>
-                <p class="error">Error generating bigrams.</p>
-            <?php else: ?>
-                <p class="alert">Cannot generate bigrams now.</p>
-            <?php endif; ?>
+            <button class="big red button" disabled>Delete</button>
+        <?php endif; ?>
+        <?php if ($corpus->hasValidTextElement()): ?>
+        <?php if ($corpus->canValidateItems()): ?>
+            <a href="<?php echo $corpus->getRecordUrl('validate'); ?>" class="big green button">Validate Items</a>
+        <?php else: ?>
+            <button class="big green button" disabled>Items Validated</button>
+        <?php endif; ?>
+        <?php if ($corpus->canGenerateN1grams()): ?>
+            <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
+                <?php echo $this->formHidden('n', 1); ?>
+                <?php echo $this->formSubmit('generate_ngrams', 'Generate Unigrams', array('class' => 'big green button')) ?>
+            </form>
+        <?php elseif ($corpus->N1Process && Process::STATUS_STARTING === $corpus->N1Process->status): ?>
+            <button class="big green button" disabled>Unigrams Starting …</button>
+        <?php elseif ($corpus->N1Process && Process::STATUS_IN_PROGRESS === $corpus->N1Process->status): ?>
+            <button class="big green button" disabled>Unigrams In Progress …</button>
+        <?php elseif ($corpus->N1Process && Process::STATUS_COMPLETED === $corpus->N1Process->status): ?>
+            <button class="big green button" disabled>Unigrams Generated</button>
+        <?php elseif ($corpus->N1Process && Process::STATUS_ERROR === $corpus->N1Process->status): ?>
+            <button class="big red button" disabled>Unigrams Error</button>
+        <?php else: ?>
+            <button class="big green button" disabled>Generate Unigrams</button>
+        <?php endif; ?>
+        <?php if ($corpus->canGenerateN2grams()): ?>
+            <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
+                <?php echo $this->formHidden('n', 2); ?>
+                <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button')) ?>
+            </form>
+        <?php elseif ($corpus->N2Process && Process::STATUS_STARTING === $corpus->N2Process->status): ?>
+            <button class="big green button" disabled>Bigrams Starting …</button>
+        <?php elseif ($corpus->N2Process && Process::STATUS_IN_PROGRESS === $corpus->N2Process->status): ?>
+            <button class="big green button" disabled>Bigrams In Progress …</button>
+        <?php elseif ($corpus->N2Process && Process::STATUS_COMPLETED === $corpus->N2Process->status): ?>
+             <button class="big green button" disabled>Bigrams Generated</button>
+        <?php elseif ($corpus->N2Process && Process::STATUS_ERROR === $corpus->N2Process->status): ?>
+            <button class="big red button" disabled>Bigrams Error</button>
+        <?php else: ?>
+            <button class="big green button" disabled>Generate Bigrams</button>
+        <?php endif; ?>
+        <?php else: ?>
+        <p class="alert">The corpus text element does not match the one currently
+        set in plugin configuration. Some features have been restricted.</p>
         <?php endif; ?>
     </div>
-    <?php else: ?>
-    <div class="panel">
-        <h4>Corpus Locked</h4>
-        <p class="error">This corpus is locked. The corpus text element does not match the one currently set in plugin configuration.</p>
-        <?php if ($corpus->canDelete()): ?>
-            <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete Corpus</a>
-        <?php endif; ?>
-    </div>
-    <?php endif; ?>
     <div class="panel">
         <h4>Text Element</h4>
         <p><?php echo sprintf('%s (%s)', $textElementName, $textElementSetName); ?></p>

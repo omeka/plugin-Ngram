@@ -11,6 +11,7 @@ $textElementSetName = $textElement->getElementSet()->name;
             <?php echo $this->formText('name', $corpus->name); ?>
         </div>
     </div>
+    <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
     <div class="field">
         <div class="two columns alpha">
             <label for="sequence_element_id" class="required">Sequence Element</label>
@@ -63,4 +64,5 @@ $textElementSetName = $textElement->getElementSet()->name;
             <?php echo $this->formText('query', $corpus->query); ?>
         </div>
     </div>
+    <?php endif; ?>
 </section>
