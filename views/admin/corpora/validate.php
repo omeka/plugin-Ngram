@@ -17,11 +17,11 @@ jQuery(window).load(function () {
     <li><a href="#out-of-range-items">Out of Range Items</a></li>
 </ul>
 
-<h2><?php echo $corpus->name; ?> (<?php echo count($corpus->ItemsPool); ?> total items)</h2>
+<h2><?php echo $corpus->name; ?> (<?php echo count($corpus->ItemsPool); ?> items)</h2>
 
-<p>Review any valid, invalid, and out of range items below. If necessary, you may
+<p>Review any valid, invalid, and out of range items below. If necessary you may
 edit items to correct their sequence texts and reload this page to update the lists.
-You will be able to generate ngrams once you've accepted the valid items.</p>
+Once you've accepted the valid items you will be able to generate ngrams.</p>
 <form method="post">
     <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
     <span class="alert"><strong>CAUTION</strong>: you will not be able to configure

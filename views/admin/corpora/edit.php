@@ -12,6 +12,13 @@ echo flash();
         <h4>Text Element</h4>
         <p><?php echo sprintf('%s (%s)', $textElementName, $textElementSetName); ?></p>
     </div>
+    <div class="panel">
+        <h4>Item Counts</h4>
+        <ul>
+            <li>Pool: <?php echo count($corpus->ItemsPool); ?></li>
+            <li>Corpus: <?php echo count($corpus->ItemsCorpus); ?></li>
+        </ul>
+    </div>
 </section>
 </form>
 

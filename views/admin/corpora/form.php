@@ -16,17 +16,15 @@ $textElementSetName = $textElement->getElementSet()->name;
             <label for="name">Public</label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">Make this corpus publicly available?</p>
+            <p class="explanation">Make this corpus available to the public?</p>
             <?php echo $this->formCheckbox('public', (bool) $corpus->public, null, array('checked' => true)); ?>
         </div>
     </div>
-    <hr>
     <fieldset>
-    <legend>Configure Item Pool</legend>
+    <legend>Item Pool</legend>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
-    <p>The item pool is the set of items from which you will select a corpus. You
-    may continue to adjust the item pool until you accept items on the "Validate
-    Items" page.</p>
+    <p>The item pool is the set of items from which you select a corpus. You may
+    continue to configure the item pool until you validate and accept corpus items.</p>
     <div class="field">
         <div class="two columns alpha">
             <label for="sequence_element_id" class="required">Sequence Element</label>
@@ -79,7 +77,7 @@ $textElementSetName = $textElement->getElementSet()->name;
         </div>
     </div>
     <?php else: ?>
-    <p class="alert">The item pool is locked.</p>
+    <p class="alert">The item pool cannot be configured.</p>
     <?php endif; ?>
     </fieldset>
 </section>

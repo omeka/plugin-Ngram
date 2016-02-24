@@ -12,6 +12,12 @@ echo flash();
 ?>
 
 <section class="seven columns alpha">
+    <h2>Public</h2>
+    <?php if ($corpus->public): ?>
+    <p>Yes</p>
+    <?php else: ?>
+    <p>No</p>
+    <?php endif; ?>
     <h2>Sequence Element</h2>
     <p><?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?></p>
     <h2>Sequence Type</h2>
@@ -20,13 +26,13 @@ echo flash();
     <?php if ($corpus->sequence_range): ?>
     <p><?php echo $corpus->sequence_range; ?></p>
     <?php else: ?>
-    <p><em>No range</em></p>
+    <p>[no range]</em></p>
     <?php endif; ?>
     <h2>Item Pool Query</h2>
     <?php if ($corpus->query): ?>
     <p><textarea rows="3"><?php echo $corpus->query; ?></textarea></p>
     <?php else: ?>
-    <p><em>No query</em></p>
+    <p>[no query]</em></p>
     <?php endif; ?>
 </section>
 

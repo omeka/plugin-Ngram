@@ -40,7 +40,7 @@ $sequenceElementSetName = $sequenceElement->getElementSet()->name;
             <?php if ($corpus->sequence_range): ?>
             <?php echo $corpus->sequence_range; ?>
             <?php else: ?>
-            <em>No range</em>
+            [no range]
             <?php endif; ?>
         </td>
     </tr>
