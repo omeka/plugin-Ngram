@@ -22,6 +22,29 @@ echo head(array('title' => 'Ngram Viewer'));
     data-graph-config="<?php echo $this->escape(json_encode($this->graphConfig)); ?>"
     data-data-keys-value="<?php echo $this->escape(json_encode($this->dataKeysValue)); ?>"
     data-data-json="<?php echo $this->escape(json_encode($this->dataJson)); ?>"></div>
+<?php if ($this->queryStats): ?>
+<h3>Corpus Statistics</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Ngram</th>
+            <th>n</th>
+            <th>Total Count</th>
+            <th>Relative Frequency %</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->queryStats as $query => $stat): ?>
+        <tr>
+            <td><?php echo $query; ?></td>
+            <td><?php echo $stat['n'] ? $stat['n'] : 'n/a'; ?></td>
+            <td><?php echo $stat['count']; ?></td>
+            <td><?php echo $stat['relative_frequency'] ? number_format($stat['relative_frequency'] * 100, 6) . '%' : 'n/a'; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php endif; ?>
 <?php else: ?>
 <p>No corpora to search.</p>
 <?php endif; ?>

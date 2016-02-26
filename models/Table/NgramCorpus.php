@@ -63,6 +63,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
      * @param string $ngram The ngram to query
      * @param null|int $start The range start
      * @param null|int $end The range end
+     * @return array
      */
     public function query($corpusId, $ngram, $start = null, $end = null)
     {
@@ -82,8 +83,61 @@ class Table_NgramCorpus extends Omeka_Db_Table
         if (is_numeric($end)) {
             $select->where('cn.sequence_member <= ?', (int) $end);
         }
-        $db->setFetchMode(Zend_Db::FETCH_NUM);
+        $db->setFetchMode(Zend_Db::FETCH_ASSOC);
         return $db->fetchAll($select);
+    }
+
+    /**
+     * Get a ngram count for a corpus.
+     *
+     * @param int $corpusId The corpus ID
+     * @param string $ngram The ngram to query
+     * @param null|int $start The range start
+     * @param null|int $end The range end
+     * @return array
+     */
+    public function getNgramCount($corpusId, $ngram, $start = null, $end = null)
+    {
+        $db = $this->getDb();
+        $select = $db->select()
+            ->from(array('cn' => $db->NgramCorpusNgram), array('count' => 'SUM(cn.match_count)'))
+            ->join(array('n' => $db->NgramNgram), 'cn.ngram_id = n.id', array('n.n'))
+            ->where('cn.corpus_id = ?', (int) $corpusId)
+            ->where('n.ngram =  ?', $ngram);
+        if (is_numeric($start)) {
+            $select->where('cn.sequence_member >= ?', (int) $start);
+        }
+        if (is_numeric($end)) {
+            $select->where('cn.sequence_member <= ?', (int) $end);
+        }
+        $db->setFetchMode(Zend_Db::FETCH_ASSOC);
+        return $db->fetchRow($select);
+    }
+
+    /**
+     * Get a total ngram count for a corpus.
+     *
+     * @param int $corpusId The corpus ID
+     * @param int $n The n to count
+     * @param null|int $start The range start
+     * @param null|int $end The range end
+     * @return int
+     */
+    public function getTotalNgramCount($corpusId, $n, $start = null, $end = null)
+    {
+        $db = $this->getDb();
+        $select = $db->select()
+            ->from(array('cn' => $db->NgramCorpusNgram), array('SUM(cn.match_count)'))
+            ->join(array('n' => $db->NgramNgram), 'cn.ngram_id = n.id', array())
+            ->where('cn.corpus_id = ?', (int) $corpusId)
+            ->where('n.n =  ?', $n);
+        if (is_numeric($start)) {
+            $select->where('cn.sequence_member >= ?', (int) $start);
+        }
+        if (is_numeric($end)) {
+            $select->where('cn.sequence_member <= ?', (int) $end);
+        }
+        return $db->fetchOne($select);
     }
 
     /**

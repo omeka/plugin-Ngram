@@ -18,11 +18,38 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
                 $results = $ngramCorpusTable->query($corpusId, $query,
                     $request->get('start'), $request->get('end'));
                 foreach ($results as $result) {
-                    $data[$result[0]][$query] = $result[1];
+                    $data[$result['sequence_member']][$query] = $result['relative_frequency'];
                 }
             }
 
             if ($data) {
+
+                // Get the ngram statistics for the entire corpus.
+                $queryStats = array();
+                foreach ($queries as $query) {
+                    $ngramCount = $ngramCorpusTable->getNgramCount(
+                        $corpusId, $query, $request->get('start'), $request->get('end')
+                    );
+                    if ($ngramCount['n']) {
+                        $totalNgramCount = $ngramCorpusTable->getTotalNgramCount(
+                            $corpusId, $ngramCount['n'], $request->get('start'), $request->get('end')
+                        );
+                    } else {
+                        $totalNgramCount = 0;
+                    }
+                    $queryStats[$query] = array(
+                        'n' => $ngramCount['n'],
+                        'count' => (int) $ngramCount['count'],
+                        'relative_frequency' => $totalNgramCount ? $ngramCount['count'] / $totalNgramCount : null
+                    );
+                }
+                uasort($queryStats, function ($a, $b) {
+                    if ($a['count'] == $b['count']) {
+                        return 0;
+                    }
+                    return ($a['count'] < $b['count']) ? 1 : -1;
+                });
+
                 // Sort to get accurate range start and end.
                 ksort($data);
 
@@ -52,6 +79,7 @@ class Ngram_IndexController extends Omeka_Controller_AbstractActionController
                 }
 
                 $this->view->dataJson = $json;
+                $this->view->queryStats = $queryStats;
                 $this->view->dataKeysValue = $queries;
                 $this->view->graphConfig = $ngramCorpusTable->getSequenceTypeGraphConfig($corpus->sequence_type);
             }
