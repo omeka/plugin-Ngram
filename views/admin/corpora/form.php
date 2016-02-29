@@ -27,11 +27,31 @@ $textElementSetName = $textElement->getElementSet()->name;
     continue to configure the item pool until you validate and accept corpus items.</p>
     <div class="field">
         <div class="two columns alpha">
-            <label for="sequence_element_id" class="required">Sequence Element</label>
+            <label for="query">Search Query</label>
+        </div>
+        <div class="inputs five columns omega">
+            <p class="explanation">Filter the item pool using a URL query string
+            that comes as a result of submitting an advanced item search.</p>
+            <?php echo $this->formText('query', $corpus->query); ?>
+        </div>
+    </div>
+    <?php else: ?>
+    <p class="alert">The item pool cannot be configured.</p>
+    <?php endif; ?>
+    </fieldset>
+    <fieldset>
+    <legend>Sequence</legend>
+    <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
+    <p>The sequence is the logical order of items in your corpus. You may continue
+    to configure the sequence until you validate and accept corpus items.</p>
+    <div class="field">
+        <div class="two columns alpha">
+            <label for="sequence_element_id">Sequence Element</label>
         </div>
         <div class="inputs five columns omega">
             <p class="explanation">Select the element (such as a date or numeric field)
-            from which to derive a sequence. Items without this element are ignored.</p>
+            from which to derive a sequence. Items without this element are removed
+            from the item pool.</p>
             <?php echo $this->formSelect(
                 'sequence_element_id',
                 $corpus->sequence_element_id,
@@ -42,7 +62,7 @@ $textElementSetName = $textElement->getElementSet()->name;
     </div>
     <div class="field">
         <div class="two columns alpha">
-            <label for="sequence_type" class="required">Sequence Type</label>
+            <label for="sequence_type">Sequence Type</label>
         </div>
         <div class="inputs five columns omega">
             <p class="explanation">Select the type of sequence to validate and represent
@@ -66,18 +86,8 @@ $textElementSetName = $textElement->getElementSet()->name;
             <?php echo $this->formText('sequence_range', $corpus->sequence_range); ?>
         </div>
     </div>
-    <div class="field">
-        <div class="two columns alpha">
-            <label for="query">Item Pool Query</label>
-        </div>
-        <div class="inputs five columns omega">
-            <p class="explanation">Filter the item pool using a URL query string
-            that comes as a result of submitting an advanced item search.</p>
-            <?php echo $this->formText('query', $corpus->query); ?>
-        </div>
-    </div>
     <?php else: ?>
-    <p class="alert">The item pool cannot be configured.</p>
+    <p class="alert">The sequence cannot be configured.</p>
     <?php endif; ?>
     </fieldset>
 </section>

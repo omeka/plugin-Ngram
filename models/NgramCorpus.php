@@ -185,10 +185,10 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         if ('' === trim($this->name)) {
             $this->addError('name', 'A name is required');
         }
-        if (!$this->getTable('Element')->exists($this->sequence_element_id)) {
+        if ($this->sequence_element_id && !$this->getTable('Element')->exists($this->sequence_element_id)) {
             $this->addError('Sequence Element', 'Invalid sequence element');
         }
-        if (!$this->getTable()->sequenceTypeExists($this->sequence_type)) {
+        if ($this->sequence_type && !$this->getTable()->sequenceTypeExists($this->sequence_type)) {
             $this->addError('Sequence Type', 'Invalid sequence type');
         }
         if ($this->sequence_range && !preg_match('/^[^\s-]+-[^\s-]+$/', $this->sequence_range)) {
@@ -206,11 +206,13 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         if (!$this->items_corpus) {
             // Retrieve and set the item pool.
             $query = $this->Query;
-            // Items must be described by the corpus sequence element.
-            $query['advanced'][] = array(
-                'element_id' => $this->sequence_element_id,
-                'type' => 'is not empty',
-            );
+            // Items might be described by the corpus sequence element.
+            if ($this->sequence_element_id) {
+                $query['advanced'][] = array(
+                    'element_id' => $this->sequence_element_id,
+                    'type' => 'is not empty',
+                );
+            }
             // Items must be described by the corpus text element.
             $query['advanced'][] = array(
                 'element_id' => get_option('ngram_text_element_id'),
@@ -222,6 +224,19 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
                 $itemIds[] = $item->id;
             }
             $this->items_pool = json_encode($itemIds);
+        }
+
+        if (!$this->query) {
+            $this->query = null;
+        }
+        if (!$this->sequence_element_id) {
+            $this->sequence_element_id = null;
+        }
+        if (!$this->sequence_type) {
+            $this->sequence_type = null;
+        }
+        if (!$this->sequence_range) {
+            $this->sequence_range = null;
         }
     }
 

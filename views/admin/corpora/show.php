@@ -4,8 +4,10 @@ $textElementName = $textElement->name;
 $textElementSetName = $textElement->getElementSet()->name;
 
 $sequenceElement = $corpus->SequenceElement;
-$sequenceElementName = $sequenceElement->name;
-$sequenceElementSetName = $sequenceElement->getElementSet()->name;
+if ($sequenceElement) {
+    $sequenceElementName = $sequenceElement->name;
+    $sequenceElementSetName = $sequenceElement->getElementSet()->name;
+}
 
 echo head(array('title' => $corpus->name, 'bodyclass'=>'show'));
 echo flash();
@@ -18,21 +20,33 @@ echo flash();
     <?php else: ?>
     <p>No</p>
     <?php endif; ?>
+
+    <h2>Search Query</h2>
+    <?php if ($corpus->query): ?>
+    <p><textarea rows="3"><?php echo $corpus->query; ?></textarea></p>
+    <?php else: ?>
+    <p>[no query]</em></p>
+    <?php endif; ?>
+
     <h2>Sequence Element</h2>
+    <?php if ($sequenceElement): ?>
     <p><?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?></p>
+    <?php else: ?>
+    <p>[no element]</em></p>
+    <?php endif; ?>
+
     <h2>Sequence Type</h2>
+    <?php if ($sequenceElement): ?>
     <p><?php echo $corpus->getSequenceTypeLabel(); ?></p>
+    <?php else: ?>
+    <p>[no type]</em></p>
+    <?php endif; ?>
+
     <h2>Sequence Range</h2>
     <?php if ($corpus->sequence_range): ?>
     <p><?php echo $corpus->sequence_range; ?></p>
     <?php else: ?>
     <p>[no range]</em></p>
-    <?php endif; ?>
-    <h2>Item Pool Query</h2>
-    <?php if ($corpus->query): ?>
-    <p><textarea rows="3"><?php echo $corpus->query; ?></textarea></p>
-    <?php else: ?>
-    <p>[no query]</em></p>
     <?php endif; ?>
 </section>
 

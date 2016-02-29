@@ -20,12 +20,12 @@ class NgramPlugin extends Omeka_Plugin_AbstractPlugin
         $db->query(<<<SQL
 CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text_element_id` int(10) unsigned NOT NULL,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `public` tinyint(1) NOT NULL,
   `query` text COLLATE utf8_unicode_ci,
-  `text_element_id` int(10) unsigned NOT NULL,
-  `sequence_element_id` int(10) unsigned NOT NULL,
-  `sequence_type` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `sequence_element_id` int(10) unsigned DEFAULT NULL,
+  `sequence_type` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `sequence_range` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `items_pool` text COLLATE utf8_unicode_ci,
   `items_corpus` text COLLATE utf8_unicode_ci,
