@@ -23,6 +23,9 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
 
     public function run($args)
     {
+        // Raise the memory limit.
+        ini_set('memory_limit', '500M');
+
         $db = get_db();
         $corpus = $db->getTable('NgramCorpus')->find($args['corpus_id']);
         $textElementId = get_option('ngram_text_element_id');
