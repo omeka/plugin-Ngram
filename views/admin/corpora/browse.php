@@ -7,7 +7,6 @@ echo flash();
 
 <div class="table-actions">
     <a href="<?php echo url(array('action' => 'add')); ?>" class="small green button">Add a Corpus</a>
-    <a href="<?php echo url(array('controller' => 'index')); ?>" class="small blue button">Ngram Viewer</a>
 </div>
 
 <table>
@@ -18,6 +17,7 @@ echo flash();
         <th>Sequence Element</th>
         <th>Sequence Type</th>
         <th>Sequence Range</th>
+        <th></th>
     </tr>
 </thead>
 <tbody>
@@ -28,14 +28,28 @@ $textElementName = $textElement->name;
 $textElementSetName = $textElement->getElementSet()->name;
 
 $sequenceElement = $corpus->SequenceElement;
-$sequenceElementName = $sequenceElement->name;
-$sequenceElementSetName = $sequenceElement->getElementSet()->name;
+if ($sequenceElement) {
+    $sequenceElementName = $sequenceElement->name;
+    $sequenceElementSetName = $sequenceElement->getElementSet()->name;
+}
 ?>
     <tr>
         <td><?php echo link_to($corpus, 'show', $corpus->name);?></td>
         <td><?php echo sprintf('%s (%s)', $textElementName, $textElementSetName); ?></td>
-        <td><?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?></td>
-        <td><?php echo $corpus->getSequenceTypeLabel(); ?></td>
+        <td>
+            <?php if ($sequenceElement): ?>
+            <?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?>
+            <?php else: ?>
+            [no element]
+            <?php endif; ?>
+        </td>
+        <td>
+            <?php if ($sequenceElement): ?>
+            <?php echo $corpus->getSequenceTypeLabel(); ?>
+            <?php else: ?>
+            [no type]
+            <?php endif; ?>
+        </td>
         <td>
             <?php if ($corpus->sequence_range): ?>
             <?php echo $corpus->sequence_range; ?>
@@ -43,6 +57,7 @@ $sequenceElementSetName = $sequenceElement->getElementSet()->name;
             [no range]
             <?php endif; ?>
         </td>
+        <td><a href="<?php echo url(array('controller' => 'viewer', 'action' => 'search', 'id' => $corpus->id)); ?>" class="small blue button">Search</a></td>
     </tr>
 <?php endforeach; ?>
 </tbody>

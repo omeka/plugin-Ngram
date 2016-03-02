@@ -29,14 +29,14 @@ echo flash();
     <?php endif; ?>
 
     <h2>Sequence Element</h2>
-    <?php if ($sequenceElement): ?>
+    <?php if ($corpus->sequence_element_id): ?>
     <p><?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?></p>
     <?php else: ?>
     <p>[no element]</em></p>
     <?php endif; ?>
 
     <h2>Sequence Type</h2>
-    <?php if ($sequenceElement): ?>
+    <?php if ($corpus->sequence_type): ?>
     <p><?php echo $corpus->getSequenceTypeLabel(); ?></p>
     <?php else: ?>
     <p>[no type]</em></p>
@@ -61,7 +61,11 @@ echo flash();
         <?php endif; ?>
         <?php if ($corpus->hasValidTextElement()): ?>
         <?php if ($corpus->canValidateItems()): ?>
-            <a href="<?php echo $corpus->getRecordUrl('validate'); ?>" class="big green button">Validate Items</a>
+            <?php if ($corpus->sequence_element_id): ?>
+            <a href="<?php echo $corpus->getRecordUrl('validate-sequence'); ?>" class="big green button">Validate Items</a>
+            <?php else: ?>
+            <a href="<?php echo $corpus->getRecordUrl('validate-nonsequence'); ?>" class="big green button">Validate Items</a>
+            <?php endif; ?>
         <?php else: ?>
             <button class="big green button" disabled>Items Validated</button>
         <?php endif; ?>

@@ -7,30 +7,36 @@ if ($this->dataJson) {
 }
 echo head(array('title' => 'Ngram Viewer'));
 ?>
-<?php if ($this->corporaOptions): ?>
+
+<h2>Searching "<?php echo $corpus->name; ?>"</h2>
+
 <form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 40, 'style' => 'margin-bottom:4px')); ?><br>
+    <?php if ($corpus->sequence_element_id): ?>
     between <?php echo $this->formText('start', $this->start, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
     and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
-    from the corpus <?php echo $this->formSelect('corpus_id', $this->corpusId, null, $this->corporaOptions); ?>
+    <?php endif; ?>
     <?php echo $this->formSubmit('submit', 'Search'); ?>
 </form>
-<?php if ($this->queries && !$this->dataJson): ?>
-<p>No ngrams to plot.</p>
-<?php endif; ?>
+
+<?php if ($this->queryStats):?>
+
+<?php if ($corpus->sequence_element_id): ?>
+<h3>Sequence Graph</h3>
 <div id="chart"
     data-graph-config="<?php echo $this->escape(json_encode($this->graphConfig)); ?>"
     data-data-keys-value="<?php echo $this->escape(json_encode($this->dataKeysValue)); ?>"
     data-data-json="<?php echo $this->escape(json_encode($this->dataJson)); ?>"></div>
-<?php if ($this->queryStats): ?>
-<h3>Corpus Statistics</h3>
+<?php endif; ?>
+
+<h3>Total Counts</h3>
 <table>
     <thead>
         <tr>
             <th>Ngram</th>
             <th>n</th>
             <th>Total Count</th>
-            <th>Relative Frequency %</th>
+            <th>Frequency %</th>
         </tr>
     </thead>
     <tbody>
@@ -44,8 +50,7 @@ echo head(array('title' => 'Ngram Viewer'));
         <?php endforeach; ?>
     </tbody>
 </table>
+
 <?php endif; ?>
-<?php else: ?>
-<p>No corpora to search.</p>
-<?php endif; ?>
+
 <?php echo foot(); ?>

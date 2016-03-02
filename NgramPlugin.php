@@ -27,12 +27,12 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus` (
   `sequence_element_id` int(10) unsigned DEFAULT NULL,
   `sequence_type` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `sequence_range` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `items_pool` text COLLATE utf8_unicode_ci,
-  `items_corpus` text COLLATE utf8_unicode_ci,
+  `items_pool` longtext COLLATE utf8_unicode_ci,
+  `items_corpus` longtext COLLATE utf8_unicode_ci,
   `n1_process_id` int(11) DEFAULT NULL,
   `n2_process_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL
         );
         $db->query(<<<SQL
@@ -59,13 +59,13 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus_ngrams` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `corpus_id` int(10) unsigned NOT NULL,
   `ngram_id` bigint(20) unsigned NOT NULL,
-  `sequence_member` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
+  `sequence_member` varchar(40) COLLATE utf8_unicode_ci DEFAULT NULL,
   `match_count` int(10) unsigned NOT NULL,
   `item_count` int(10) unsigned NOT NULL,
   `relative_frequency` decimal(21,20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `corpus_ngram_member` (`corpus_id`,`ngram_id`,`sequence_member`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL
         );
     }
