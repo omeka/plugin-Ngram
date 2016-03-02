@@ -42,8 +42,9 @@ $textElementSetName = $textElement->getElementSet()->name;
     <fieldset>
     <legend>Sequence</legend>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
-    <p>The sequence is the logical order of items in your corpus. You may continue
-    to configure the sequence until you validate and accept corpus items.</p>
+    <p>The sequence is the logical order of items in your corpus. A sequence is not
+    required but is needed to generate a sequence graph. You may continue to configure
+    the sequence until you validate and accept corpus items.</p>
     <div class="field">
         <div class="two columns alpha">
             <label for="sequence_element_id">Sequence Element</label>
