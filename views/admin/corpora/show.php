@@ -36,14 +36,14 @@ echo flash();
     <?php endif; ?>
 
     <h2>Sequence Type</h2>
-    <?php if ($corpus->sequence_type()): ?>
+    <?php if ($corpus->sequence_type): ?>
     <p><?php echo $corpus->getSequenceTypeLabel(); ?></p>
     <?php else: ?>
     <p>[no type]</em></p>
     <?php endif; ?>
 
     <h2>Sequence Range</h2>
-    <?php if ($corpus->sequence_range()): ?>
+    <?php if ($corpus->sequence_range): ?>
     <p><?php echo $corpus->sequence_range; ?></p>
     <?php else: ?>
     <p>[no range]</em></p>
