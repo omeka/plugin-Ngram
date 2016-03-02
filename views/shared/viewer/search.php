@@ -3,7 +3,7 @@ if ($this->dataJson) {
     queue_css_file('c3/0.4.10/c3.min');
     queue_js_file('d3/3.5.16/d3.min');
     queue_js_file('c3/0.4.10/c3.min');
-    queue_js_file('ngram-graph');
+    queue_js_file('sequence-graph');
 }
 echo head(array('title' => 'Ngram Viewer'));
 ?>
@@ -12,7 +12,7 @@ echo head(array('title' => 'Ngram Viewer'));
 
 <form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 40, 'style' => 'margin-bottom:4px')); ?><br>
-    <?php if ($corpus->sequence_element_id): ?>
+    <?php if ($corpus->isSequenced()): ?>
     between <?php echo $this->formText('start', $this->start, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
     and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
     <?php endif; ?>
@@ -21,9 +21,9 @@ echo head(array('title' => 'Ngram Viewer'));
 
 <?php if ($this->queryStats):?>
 
-<?php if ($corpus->sequence_element_id): ?>
+<?php if ($corpus->isSequenced()): ?>
 <h3>Sequence Graph</h3>
-<div id="chart"
+<div id="sequence-graph"
     data-graph-config="<?php echo $this->escape(json_encode($this->graphConfig)); ?>"
     data-data-keys-value="<?php echo $this->escape(json_encode($this->dataKeysValue)); ?>"
     data-data-json="<?php echo $this->escape(json_encode($this->dataJson)); ?>"></div>

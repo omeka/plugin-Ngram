@@ -109,6 +109,16 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
+     * Is this a sequenced corpus?
+     *
+     * @return bool
+     */
+    public function isSequenced()
+    {
+        return (bool) $this->sequence_element_id;
+    }
+
+    /**
      * Does this corpus have a valid text element.
      *
      * A corpus text element is valid if it's the one currently set in plugin

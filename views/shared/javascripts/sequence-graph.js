@@ -1,11 +1,11 @@
 jQuery(document).ready(function() {
-    var chartDiv = jQuery('#chart');
+    var chartDiv = jQuery('#sequence-graph');
     var graphConfig = chartDiv.data('graph-config');
     var dataKeysValue = chartDiv.data('data-keys-value');
     var dataJson = chartDiv.data('data-json');
 
-    var chart = c3.generate({
-        bindto: '#chart',
+    c3.generate({
+        bindto: '#sequence-graph',
         data: {
             xFormat: graphConfig.dataXFormat,
             json: dataJson,

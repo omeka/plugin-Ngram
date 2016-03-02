@@ -72,7 +72,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                 $ngramIds = $db->query($selectItemSql, $key)->fetchAll(Zend_Db::FETCH_COLUMN, 0);
                 if ($ngramIds) {
                     foreach ($ngramIds as $ngramId) {
-                        $corpus->sequence_element_id
+                        $corpus->isSequenced()
                             ? $this->_addSequencedItem($value, $ngramId, $key)
                             : $this->_addUnsequencedItem($ngramId, $value);
                     }
@@ -80,7 +80,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                 }
 
                 // Get the item text.
-                $stmt = $corpus->sequence_element_id
+                $stmt = $corpus->isSequenced()
                     ? $db->query($selectTextSql, $key)
                     : $db->query($selectTextSql, $value);
                 $text = new Ngram_Text($stmt->fetchColumn(0));
@@ -90,7 +90,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                     $db->query($ngramsSql, array($ngram, $n));
                     $ngramId = $db->lastInsertId();
                     $db->query($itemNgramsSql, array($ngramId, $key));
-                    $corpus->sequence_element_id
+                    $corpus->isSequenced()
                         ? $this->_addSequencedItem($value, $ngramId, $key)
                         : $this->_addUnsequencedItem($ngramId, $value);
                 }
@@ -116,7 +116,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
 
         $db->beginTransaction();
         try {
-            if ($corpus->sequence_element_id) {
+            if ($corpus->isSequenced()) {
                 foreach ($this->_sequencedCorpus as $sequenceMember => $ngrams) {
                     foreach ($ngrams as $ngramId => $items) {
                         $matchCount = count($items);

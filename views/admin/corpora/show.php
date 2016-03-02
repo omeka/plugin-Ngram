@@ -36,14 +36,14 @@ echo flash();
     <?php endif; ?>
 
     <h2>Sequence Type</h2>
-    <?php if ($corpus->sequence_type): ?>
+    <?php if ($corpus->sequence_type()): ?>
     <p><?php echo $corpus->getSequenceTypeLabel(); ?></p>
     <?php else: ?>
     <p>[no type]</em></p>
     <?php endif; ?>
 
     <h2>Sequence Range</h2>
-    <?php if ($corpus->sequence_range): ?>
+    <?php if ($corpus->sequence_range()): ?>
     <p><?php echo $corpus->sequence_range; ?></p>
     <?php else: ?>
     <p>[no range]</em></p>
@@ -61,7 +61,7 @@ echo flash();
         <?php endif; ?>
         <?php if ($corpus->hasValidTextElement()): ?>
         <?php if ($corpus->canValidateItems()): ?>
-            <?php if ($corpus->sequence_element_id): ?>
+            <?php if ($corpus->isSequenced()): ?>
             <a href="<?php echo $corpus->getRecordUrl('validate-sequence'); ?>" class="big green button">Validate Items</a>
             <?php else: ?>
             <a href="<?php echo $corpus->getRecordUrl('validate-nonsequence'); ?>" class="big green button">Validate Items</a>

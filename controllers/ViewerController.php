@@ -10,7 +10,6 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
     {
         $request = $this->getRequest();
         $table = $this->_helper->db;
-        $ngramCorpusTable = $table->getTable('NgramCorpus');
         $corpus = $table->findById();
 
         if ($request->isPost()) {
@@ -19,11 +18,11 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
             // Get the ngram statistics for the entire corpus.
             $queryStats = array();
             foreach ($queries as $query) {
-                $ngramCount = $ngramCorpusTable->getNgramCount(
+                $ngramCount = $table->getNgramCount(
                     $corpus->id, $query, $request->get('start'), $request->get('end')
                 );
                 if ($ngramCount['n']) {
-                    $totalNgramCount = $ngramCorpusTable->getTotalNgramCount(
+                    $totalNgramCount = $table->getTotalNgramCount(
                         $corpus->id, $ngramCount['n'], $request->get('start'), $request->get('end')
                     );
                 } else {
@@ -44,11 +43,11 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
 
             if ($queryStats) {
 
-                if ($corpus->sequence_element_id) {
+                if ($corpus->isSequenced()) {
                     // Query each string and combine the results.
                     $data = array();
                     foreach ($queries as $query) {
-                        $results = $ngramCorpusTable->query($corpus->id, $query,
+                        $results = $table->query($corpus->id, $query,
                             $request->get('start'), $request->get('end'));
                         foreach ($results as $result) {
                             $data[$result['sequence_member']][$query] = $result['relative_frequency'];
@@ -60,7 +59,7 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
 
                     // Fill gaps in the the sequence.
                     $seqMems = array_keys($data);
-                    $seqFiller = $ngramCorpusTable->getSequenceFiller($corpus->sequence_type);
+                    $seqFiller = $table->getSequenceFiller($corpus->sequence_type);
                     $filledSeq = $seqFiller->getFilledSequence(reset($seqMems), end($seqMems));
                     $data = $data + array_flip($filledSeq);
 
@@ -85,7 +84,7 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
 
                     $this->view->dataJson = $json;
                     $this->view->dataKeysValue = $queries;
-                    $this->view->graphConfig = $ngramCorpusTable->getSequenceTypeGraphConfig($corpus->sequence_type);
+                    $this->view->graphConfig = $table->getSequenceTypeGraphConfig($corpus->sequence_type);
                 }
                 $this->view->queryStats = $queryStats;
             }
