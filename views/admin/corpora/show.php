@@ -23,7 +23,7 @@ echo flash();
 
     <h2>Search Query</h2>
     <?php if ($corpus->query): ?>
-    <p><textarea rows="3"><?php echo $corpus->query; ?></textarea></p>
+    <p><?php echo $corpus->query; ?></p>
     <?php else: ?>
     <p>[no query]</em></p>
     <?php endif; ?>
