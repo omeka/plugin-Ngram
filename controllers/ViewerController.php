@@ -41,19 +41,18 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
                 return ($a['count'] < $b['count']) ? 1 : -1;
             });
 
-            if ($queryStats) {
-
-                if ($corpus->isSequenced()) {
-                    // Query each string and combine the results.
-                    $data = array();
-                    foreach ($queries as $query) {
-                        $results = $table->query($corpus->id, $query,
-                            $request->get('start'), $request->get('end'));
-                        foreach ($results as $result) {
-                            $data[$result['sequence_member']][$query] = $result['relative_frequency'];
-                        }
+            if ($corpus->isSequenced()) {
+                // Query each string and combine the results.
+                $data = array();
+                foreach ($queries as $query) {
+                    $results = $table->query($corpus->id, $query,
+                        $request->get('start'), $request->get('end'));
+                    foreach ($results as $result) {
+                        $data[$result['sequence_member']][$query] = $result['relative_frequency'];
                     }
+                }
 
+                if ($data) {
                     // Sort to get accurate range start and end.
                     ksort($data);
 
@@ -86,8 +85,9 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
                     $this->view->dataKeysValue = $queries;
                     $this->view->graphConfig = $table->getSequenceTypeGraphConfig($corpus->sequence_type);
                 }
-                $this->view->queryStats = $queryStats;
             }
+
+            $this->view->queryStats = $queryStats;
         }
 
         $this->view->corpus = $corpus;

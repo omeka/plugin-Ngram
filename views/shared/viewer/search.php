@@ -23,10 +23,14 @@ echo head(array('title' => 'Corpus Viewer'));
 
 <?php if ($corpus->isSequenced()): ?>
 <h3>Sequence Graph</h3>
+<?php if ($this->dataJson): ?>
 <div id="sequence-graph"
     data-graph-config="<?php echo $this->escape(json_encode($this->graphConfig)); ?>"
     data-data-keys-value="<?php echo $this->escape(json_encode($this->dataKeysValue)); ?>"
     data-data-json="<?php echo $this->escape(json_encode($this->dataJson)); ?>"></div>
+<?php else: ?>
+<p>No results to graph.</p>
+<?php endif; ?>
 <?php endif; ?>
 
 <h3>Total Counts</h3>
