@@ -106,6 +106,10 @@ echo flash();
         set in plugin configuration. Some features have been restricted.</p>
         <?php endif; ?>
     </div>
+    <div id="save" class="panel">
+        <h4>View Corpus</h4>
+        <a class="big blue button" href="<?php echo url(array('controller' => 'viewer', 'action' => 'search', 'id' => $corpus->id)); ?>">Search</a>
+    </div>
     <div class="panel">
         <h4>Text Element</h4>
         <p><?php echo sprintf('%s (%s)', $textElementName, $textElementSetName); ?></p>

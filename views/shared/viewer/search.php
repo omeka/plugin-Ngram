@@ -5,7 +5,7 @@ if ($this->dataJson) {
     queue_js_file('c3/0.4.10/c3.min');
     queue_js_file('sequence-graph');
 }
-echo head(array('title' => 'Ngram Viewer'));
+echo head(array('title' => 'Corpus Viewer'));
 ?>
 
 <h2>Searching "<?php echo $corpus->name; ?>"</h2>

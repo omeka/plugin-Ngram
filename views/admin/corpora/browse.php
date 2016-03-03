@@ -17,7 +17,6 @@ echo flash();
         <th>Sequence Element</th>
         <th>Sequence Type</th>
         <th>Sequence Range</th>
-        <th></th>
     </tr>
 </thead>
 <tbody>
@@ -35,16 +34,16 @@ if ($sequenceElement) {
 ?>
     <tr>
         <td><?php echo link_to($corpus, 'show', $corpus->name);?></td>
-        <td><?php echo sprintf('%s (%s)', $textElementName, $textElementSetName); ?></td>
+        <td><?php echo sprintf('%s<br>(%s)', $textElementName, $textElementSetName); ?></td>
         <td>
-            <?php if ($sequenceElement): ?>
-            <?php echo sprintf('%s (%s)', $sequenceElementName, $sequenceElementSetName); ?>
+            <?php if ($corpus->sequence_element_id): ?>
+            <?php echo sprintf('%s<br>(%s)', $sequenceElementName, $sequenceElementSetName); ?>
             <?php else: ?>
             [no element]
             <?php endif; ?>
         </td>
         <td>
-            <?php if ($sequenceElement): ?>
+            <?php if ($corpus->sequence_type): ?>
             <?php echo $corpus->getSequenceTypeLabel(); ?>
             <?php else: ?>
             [no type]
@@ -57,7 +56,6 @@ if ($sequenceElement) {
             [no range]
             <?php endif; ?>
         </td>
-        <td><a href="<?php echo url(array('controller' => 'viewer', 'action' => 'search', 'id' => $corpus->id)); ?>" class="small blue button">Search</a></td>
     </tr>
 <?php endforeach; ?>
 </tbody>
