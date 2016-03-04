@@ -8,7 +8,7 @@ if ($this->dataJson) {
 echo head(array('title' => 'Corpus Viewer'));
 ?>
 
-<h2>Searching "<?php echo $corpus->name; ?>"</h2>
+<h2>Search corpus "<?php echo $corpus->name; ?>"</h2>
 
 <form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 40, 'style' => 'margin-bottom:4px')); ?><br>

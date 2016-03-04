@@ -51,13 +51,13 @@ echo flash();
 </section>
 
 <section class="three columns omega">
-    <div id="save" class="panel">
+    <div class="panel">
         <h4>Manage Corpus</h4>
         <a href="<?php echo $corpus->getRecordUrl('edit'); ?>" class="big green button">Edit</a>
         <?php if ($corpus->canDelete()): ?>
             <a href="<?php echo $corpus->getRecordUrl('delete-confirm'); ?>" class="delete-confirm big red button">Delete</a>
         <?php else: ?>
-            <button class="big red button" disabled>Delete</button>
+            <a class="big red button" disabled>Delete</a>
         <?php endif; ?>
         <?php if ($corpus->hasValidTextElement()): ?>
         <?php if ($corpus->canValidateItems()): ?>
@@ -67,48 +67,51 @@ echo flash();
             <a href="<?php echo $corpus->getRecordUrl('validate-nonsequence'); ?>" class="big green button">Validate Items</a>
             <?php endif; ?>
         <?php else: ?>
-            <button class="big green button" disabled>Items Validated</button>
+            <a class="big green button" disabled>Items Validated</a>
         <?php endif; ?>
         <?php if ($corpus->canGenerateN1grams()): ?>
             <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
                 <?php echo $this->formHidden('n', 1); ?>
-                <?php echo $this->formSubmit('generate_ngrams', 'Generate Unigrams', array('class' => 'big green button')) ?>
+                <?php echo $this->formSubmit('generate_ngrams', 'Generate Unigrams', array('class' => 'big green button', 'style' => 'width:100%')) ?>
             </form>
         <?php elseif ($corpus->N1Process && Process::STATUS_STARTING === $corpus->N1Process->status): ?>
-            <button class="big green button" disabled>Unigrams Starting …</button>
+            <a class="big green button" disabled>Unigrams Starting …</a>
         <?php elseif ($corpus->N1Process && Process::STATUS_IN_PROGRESS === $corpus->N1Process->status): ?>
-            <button class="big green button" disabled>Unigrams In Progress …</button>
+            <a class="big green button" disabled>Unigrams In Progress …</a>
         <?php elseif ($corpus->N1Process && Process::STATUS_COMPLETED === $corpus->N1Process->status): ?>
-            <button class="big green button" disabled>Unigrams Generated</button>
+            <a class="big green button" disabled>Unigrams Generated</a>
         <?php elseif ($corpus->N1Process && Process::STATUS_ERROR === $corpus->N1Process->status): ?>
-            <button class="big red button" disabled>Unigrams Error</button>
+            <a class="big red button" disabled>Unigrams Error</a>
         <?php else: ?>
-            <button class="big green button" disabled>Generate Unigrams</button>
+            <a class="big green button" disabled>Generate Unigrams</a>
         <?php endif; ?>
         <?php if ($corpus->canGenerateN2grams()): ?>
             <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
                 <?php echo $this->formHidden('n', 2); ?>
-                <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button')) ?>
+                <?php echo $this->formSubmit('generate_ngrams', 'Generate Bigrams', array('class' => 'big green button', 'style' => 'width:100%')) ?>
             </form>
         <?php elseif ($corpus->N2Process && Process::STATUS_STARTING === $corpus->N2Process->status): ?>
-            <button class="big green button" disabled>Bigrams Starting …</button>
+            <a class="big green button" disabled>Bigrams Starting …</a>
         <?php elseif ($corpus->N2Process && Process::STATUS_IN_PROGRESS === $corpus->N2Process->status): ?>
-            <button class="big green button" disabled>Bigrams In Progress …</button>
+            <a class="big green button" disabled>Bigrams In Progress …</a>
         <?php elseif ($corpus->N2Process && Process::STATUS_COMPLETED === $corpus->N2Process->status): ?>
-             <button class="big green button" disabled>Bigrams Generated</button>
+            <a class="big green button" disabled>Bigrams Generated</a>
         <?php elseif ($corpus->N2Process && Process::STATUS_ERROR === $corpus->N2Process->status): ?>
-            <button class="big red button" disabled>Bigrams Error</button>
+            <a class="big red button" disabled>Bigrams Error</a>
         <?php else: ?>
-            <button class="big green button" disabled>Generate Bigrams</button>
+            <a class="big green button" disabled>Generate Bigrams</a>
         <?php endif; ?>
         <?php else: ?>
         <p class="alert">The corpus text element does not match the one currently
         set in plugin configuration. Some features have been restricted.</p>
         <?php endif; ?>
     </div>
-    <div id="save" class="panel">
+    <div class="panel">
         <h4>View Corpus</h4>
-        <a class="big blue button" href="<?php echo url(array('controller' => 'viewer', 'action' => 'search', 'id' => $corpus->id)); ?>">Search</a>
+        <a class="big blue button" href="<?php echo url(array('controller' => 'viewer', 'action' => 'ngram-search', 'id' => $corpus->id)); ?>">Ngram Search</a>
+<!--
+        <a class="big blue button" href="<?php echo url(array('controller' => 'viewer', 'action' => 'ngram-frequencies', 'id' => $corpus->id)); ?>">Ngram Frequencies</a>
+-->
     </div>
     <div class="panel">
         <h4>Text Element</h4>

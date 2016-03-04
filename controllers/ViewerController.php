@@ -6,7 +6,7 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
         $this->_helper->db->setDefaultModelName('NgramCorpus');
     }
 
-    public function searchAction()
+    public function ngramSearchAction()
     {
         $request = $this->getRequest();
         $table = $this->_helper->db;
@@ -94,5 +94,14 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
         $this->view->queries = $request->get('queries');
         $this->view->start = $request->get('start');
         $this->view->end = $request->get('end');
+    }
+
+    public function ngramFrequenciesAction()
+    {
+        $request = $this->getRequest();
+        $table = $this->_helper->db;
+        $corpus = $table->findById();
+
+        $this->view->corpus = $corpus;
     }
 }
