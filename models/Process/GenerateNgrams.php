@@ -24,7 +24,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
     public function run($args)
     {
         // Raise the memory limit.
-        ini_set('memory_limit', '500M');
+        ini_set('memory_limit', '1G');
 
         $db = get_db();
         $corpus = $db->getTable('NgramCorpus')->find($args['corpus_id']);
@@ -71,31 +71,34 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
             // Iterate sequenced items.
             foreach ($corpus->ItemsCorpus as $key => $value) {
 
+                // Account for different storage formats for sequenced and
+                // unsequenced corpora.
+                $itemId = $corpus->isSequenced() ? $key : $value;
+                $sequenceMember = $corpus->isSequenced() ? $value : null;
+
                 // Do not re-generate item ngrams for the current n.
-                $ngramIds = $db->query($selectItemSql, $key)->fetchAll(Zend_Db::FETCH_COLUMN, 0);
+                $ngramIds = $db->query($selectItemSql, $itemId)->fetchAll(Zend_Db::FETCH_COLUMN, 0);
                 if ($ngramIds) {
                     foreach ($ngramIds as $ngramId) {
                         $corpus->isSequenced()
-                            ? $this->_addSequencedItem($value, $ngramId, $key)
-                            : $this->_addUnsequencedItem($ngramId, $value);
+                            ? $this->_addSequencedItem($sequenceMember, $ngramId, $itemId)
+                            : $this->_addUnsequencedItem($ngramId, $itemId);
                     }
                     continue;
                 }
 
                 // Get the item text.
-                $stmt = $corpus->isSequenced()
-                    ? $db->query($selectTextSql, $key)
-                    : $db->query($selectTextSql, $value);
+                $stmt = $db->query($selectTextSql, $itemId);
                 $text = new Ngram_Text($stmt->fetchColumn(0));
 
                 // Iterate item ngrams.
                 foreach ($text->getNgrams($n) as $ngram) {
                     $db->query($ngramsSql, array($ngram, $n));
                     $ngramId = $db->lastInsertId();
-                    $db->query($itemNgramsSql, array($ngramId, $key));
+                    $db->query($itemNgramsSql, array($ngramId, $itemId));
                     $corpus->isSequenced()
-                        ? $this->_addSequencedItem($value, $ngramId, $key)
-                        : $this->_addUnsequencedItem($ngramId, $value);
+                        ? $this->_addSequencedItem($sequenceMember, $ngramId, $itemId)
+                        : $this->_addUnsequencedItem($ngramId, $itemId);
                 }
             }
             $db->commit();
