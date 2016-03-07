@@ -51,7 +51,8 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_item_ngrams` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ngram_id` bigint(20) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL
         );
