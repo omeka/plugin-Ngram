@@ -17,21 +17,23 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
 
             // Get the ngram statistics for the entire corpus.
             $queryStats = array();
+            $totalNgramCounts = array();
             foreach ($queries as $query) {
                 $ngramCount = $table->getNgramCount(
                     $corpus->id, $query, $request->get('start'), $request->get('end')
                 );
-                if ($ngramCount['n']) {
-                    $totalNgramCount = $table->getTotalNgramCount(
+                if ($ngramCount['n'] && !isset($totalNgramCounts[$ngramCount['n']])) {
+                    // Get the total ngram count only once per n.
+                    $totalNgramCounts[$ngramCount['n']] = $table->getTotalNgramCount(
                         $corpus->id, $ngramCount['n'], $request->get('start'), $request->get('end')
                     );
-                } else {
-                    $totalNgramCount = 0;
                 }
                 $queryStats[$query] = array(
                     'n' => $ngramCount['n'],
                     'count' => (int) $ngramCount['count'],
-                    'relative_frequency' => $totalNgramCount ? $ngramCount['count'] / $totalNgramCount : null
+                    'relative_frequency' => isset($totalNgramCounts[$ngramCount['n']])
+                        ? $ngramCount['count'] / $totalNgramCounts[$ngramCount['n']]
+                        : null
                 );
             }
             uasort($queryStats, function ($a, $b) {
