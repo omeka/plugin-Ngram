@@ -4,22 +4,12 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
     /**
      * @var array
      */
-    protected $_sequencedCorpus = array();
+    protected $_ngramCount;
 
     /**
-     * @var array
+     * @var int|array
      */
-    protected $_unsequencedCorpus = array();
-
-    /**
-     * @var array Total ngram counts (per sequence) for a sequenced corpus
-     */
-    protected $_totalNgramCounts = array();
-
-    /**
-     * @var int Total ngram count for an unsequenced corpus
-     */
-    protected $_totalNgramCount = 0;
+    protected $_totalNgramCount;
 
     public function run($args)
     {
@@ -80,9 +70,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                 $ngramIds = $db->query($selectItemSql, $itemId)->fetchAll(Zend_Db::FETCH_COLUMN, 0);
                 if ($ngramIds) {
                     foreach ($ngramIds as $ngramId) {
-                        $corpus->isSequenced()
-                            ? $this->_addSequencedItem($sequenceMember, $ngramId, $itemId)
-                            : $this->_addUnsequencedItem($ngramId, $itemId);
+                        $this->_incrementNgramCount($ngramId, $sequenceMember);
                     }
                     continue;
                 }
@@ -96,9 +84,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                     $db->query($ngramsSql, array($ngram, $n));
                     $ngramId = $db->lastInsertId();
                     $db->query($itemNgramsSql, array($ngramId, $itemId));
-                    $corpus->isSequenced()
-                        ? $this->_addSequencedItem($sequenceMember, $ngramId, $itemId)
-                        : $this->_addUnsequencedItem($ngramId, $itemId);
+                    $this->_incrementNgramCount($ngramId, $sequenceMember);
                 }
             }
             $db->commit();
@@ -113,9 +99,9 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
 
         $corpusNgramsSql = sprintf('
         INSERT INTO %s (
-            corpus_id, ngram_id, sequence_member, match_count, item_count, relative_frequency
+            corpus_id, ngram_id, sequence_member, match_count, relative_frequency
         ) VALUES (
-            %s, ?, ?, ?, ?, ?
+            %s, ?, ?, ?, ?
         )',
         $db->NgramCorpusNgram,
         $corpus->id);
@@ -123,26 +109,22 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         $db->beginTransaction();
         try {
             if ($corpus->isSequenced()) {
-                foreach ($this->_sequencedCorpus as $sequenceMember => $ngrams) {
-                    foreach ($ngrams as $ngramId => $items) {
-                        $matchCount = count($items);
+                foreach ($this->_ngramCount as $sequenceMember => $ngrams) {
+                    foreach ($ngrams as $ngramId => $matchCount) {
                         $db->query($corpusNgramsSql, array(
                             $ngramId,
                             $sequenceMember,
                             $matchCount,
-                            count(array_unique($items)),
-                            $matchCount / $this->_totalNgramCounts[$sequenceMember],
+                            $matchCount / $this->_totalNgramCount[$sequenceMember],
                         ));
                     }
                 }
             } else {
-                foreach ($this->_unsequencedCorpus as $ngramId => $items) {
-                    $matchCount = count($items);
+                foreach ($this->_ngramCount as $ngramId => $matchCount) {
                     $db->query($corpusNgramsSql, array(
                         $ngramId,
                         null,
                         $matchCount,
-                        count(array_unique($items)),
                         $matchCount / $this->_totalNgramCount,
                     ));
                 }
@@ -160,41 +142,41 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
     }
 
     /**
-     * Add a sequenced item and increment total ngram count.
+     * Increment individual ngram and total ngram counts.
      *
-     * @param string $sequenceMember
-     * @param string $ngramId
-     * @param string $itemId
-     */
-    protected function _addSequencedItem($sequenceMember, $ngramId, $itemId)
-    {
-        if (!isset($this->_sequencedCorpus[$sequenceMember])) {
-            $this->_sequencedCorpus[$sequenceMember] = [];
-        }
-        if (!isset($this->_sequencedCorpus[$sequenceMember][$ngramId])) {
-            $this->_sequencedCorpus[$sequenceMember][$ngramId] = [];
-        }
-        $this->_sequencedCorpus[$sequenceMember][$ngramId][] = $itemId;
-
-        if (!isset($this->_totalNgramCounts[$sequenceMember])) {
-            $this->_totalNgramCounts[$sequenceMember] = 0;
-        }
-        $this->_totalNgramCounts[$sequenceMember]++;
-    }
-
-    /**
-     * Add an unsequenced item.
+     * A null sequence member indicates that this corpus is unsequenced;
+     * otherwise it is sequenced.
      *
-     * @param string $ngramId
-     * @param string $itemId
+     * @param int $ngramId
+     * @param null|string $sequenceMember
      */
-    protected function _addUnsequencedItem($ngramId, $itemId)
+    protected function _incrementNgramCount($ngramId, $sequenceMember = null)
     {
-        if (!isset($this->_unsequencedCorpus[$ngramId])) {
-            $this->_unsequencedCorpus[$ngramId] = [];
-        }
-        $this->_unsequencedCorpus[$ngramId][] = $itemId;
+        if (null === $sequenceMember) {
+            // This is an unsequenced corpus.
+            if (!isset($this->_ngramCount[$ngramId])) {
+                $this->_ngramCount[$ngramId] = 0;
+            }
+            $this->_ngramCount[$ngramId]++;
 
-        $this->_totalNgramCount++;
+            if (!isset($this->_totalNgramCount)) {
+                $this->_totalNgramCount = 0;
+            }
+            $this->_totalNgramCount++;
+        } else {
+            // This is a sequenced corpus.
+            if (!isset($this->_ngramCount[$sequenceMember])) {
+                $this->_ngramCount[$sequenceMember] = array();
+            }
+            if (!isset($this->_ngramCount[$sequenceMember][$ngramId])) {
+                $this->_ngramCount[$sequenceMember][$ngramId] = 0;
+            }
+            $this->_ngramCount[$sequenceMember][$ngramId]++;
+
+            if (!isset($this->_totalNgramCount[$sequenceMember])) {
+                $this->_totalNgramCount[$sequenceMember] = 0;
+            }
+            $this->_totalNgramCount[$sequenceMember]++;
+        }
     }
 }
