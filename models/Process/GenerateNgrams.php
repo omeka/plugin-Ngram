@@ -94,7 +94,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         }
 
         /**
-         * Now, calculate and store the corpus ngrams.
+         * Now, calculate and store the corpus ngrams and total ngram count.
          */
 
         $corpusNgramsSql = sprintf('
@@ -105,6 +105,12 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         )',
         $db->NgramCorpusNgram,
         $corpus->id);
+
+        $corpusTotalCountsSql = sprintf('
+        INSERT INTO %s (corpus_id, n, sequence_member, count) VALUES (%s, %s, ?, ?)',
+        $db->NgramCorpusTotalCount,
+        $corpus->id,
+        $db->quote($n, Zend_Db::INT_TYPE));
 
         $db->beginTransaction();
         try {
@@ -119,6 +125,9 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                         ));
                     }
                 }
+                foreach ($this->_totalNgramCount as $sequenceMember => $ngramCount) {
+                    $db->query($corpusTotalCountsSql, array($sequenceMember, $ngramCount));
+                }
             } else {
                 foreach ($this->_ngramCount as $ngramId => $matchCount) {
                     $db->query($corpusNgramsSql, array(
@@ -128,6 +137,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                         $matchCount / $this->_totalNgramCount,
                     ));
                 }
+                $db->query($corpusTotalCountsSql, array(null, $this->_totalNgramCount));
             }
             $db->commit();
         } catch (Exception $e) {

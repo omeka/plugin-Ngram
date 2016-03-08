@@ -127,15 +127,14 @@ class Table_NgramCorpus extends Omeka_Db_Table
     {
         $db = $this->getDb();
         $select = $db->select()
-            ->from(array('cn' => $db->NgramCorpusNgram), array('SUM(cn.match_count)'))
-            ->join(array('n' => $db->NgramNgram), 'cn.ngram_id = n.id', array())
-            ->where('cn.corpus_id = ?', (int) $corpusId)
-            ->where('n.n =  ?', $n);
+            ->from($db->NgramCorpusTotalCount, 'SUM(count)')
+            ->where('corpus_id = ?', (int) $corpusId)
+            ->where('n =  ?', $n);
         if (is_numeric($start)) {
-            $select->where('cn.sequence_member >= ?', (int) $start);
+            $select->where('sequence_member >= ?', (int) $start);
         }
         if (is_numeric($end)) {
-            $select->where('cn.sequence_member <= ?', (int) $end);
+            $select->where('sequence_member <= ?', (int) $end);
         }
         return $db->fetchOne($select);
     }
@@ -308,6 +307,18 @@ class Table_NgramCorpus extends Omeka_Db_Table
     {
         $db = $this->getDb();
         $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusNgram);
+        $db->query($sql, $corpusId);
+    }
+
+    /**
+     * Delete corpus counts.
+     *
+     * @param int $corpusId
+     */
+    public function deleteCorpusTotalCounts($corpusId)
+    {
+        $db = $this->getDb();
+        $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusTotalCount);
         $db->query($sql, $corpusId);
     }
 }
