@@ -81,6 +81,17 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus_total_counts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL
         );
+        $db->query(<<<SQL
+CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus_counts` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `corpus_id` int(10) unsigned NOT NULL,
+  `ngram_id` bigint(20) unsigned NOT NULL,
+  `count` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `corpus_ngram` (`corpus_id`,`ngram_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+SQL
+        );
     }
 
     public function hookUninstall()
@@ -91,6 +102,7 @@ SQL
         $db->query("DROP TABLE IF EXISTS `{$db->prefix}ngram_item_ngrams`");
         $db->query("DROP TABLE IF EXISTS `{$db->prefix}ngram_corpus_ngrams`");
         $db->query("DROP TABLE IF EXISTS `{$db->prefix}ngram_corpus_total_counts`");
+        $db->query("DROP TABLE IF EXISTS `{$db->prefix}ngram_corpus_counts`");
 
         delete_option('ngram_text_element_id');
     }

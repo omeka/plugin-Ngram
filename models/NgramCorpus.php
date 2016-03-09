@@ -260,5 +260,6 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     {
         $this->getTable()->deleteCorpusNgrams($this->id);
         $this->getTable()->deleteCorpusTotalCounts($this->id);
+        $this->getTable()->deleteCorpusCounts($this->id);
     }
 }

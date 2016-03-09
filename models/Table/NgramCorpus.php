@@ -311,7 +311,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
     }
 
     /**
-     * Delete corpus counts.
+     * Delete corpus total counts.
      *
      * @param int $corpusId
      */
@@ -319,6 +319,18 @@ class Table_NgramCorpus extends Omeka_Db_Table
     {
         $db = $this->getDb();
         $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusTotalCount);
+        $db->query($sql, $corpusId);
+    }
+
+    /**
+     * Delete corpus counts.
+     *
+     * @param int $corpusId
+     */
+    public function deleteCorpusCounts($corpusId)
+    {
+        $db = $this->getDb();
+        $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusCount);
         $db->query($sql, $corpusId);
     }
 }
