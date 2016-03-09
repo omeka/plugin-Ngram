@@ -31,6 +31,11 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         $textElementId = get_option('ngram_text_element_id');
         $n = $args['n'];
 
+        _log(sprintf(
+            'Memory limit for corpus #%s (n=%s): %s',
+            $corpus->id, $n, ini_get('memory_limit')
+        ));
+
         /**
          * First derive and store the discrete ngrams and item ngrams.
          */
