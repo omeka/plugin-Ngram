@@ -104,6 +104,11 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
         $table = $this->_helper->db;
         $corpus = $table->findById();
 
+        echo '<pre>';
+        print_r($table->getNgramsAndCounts($corpus->id, 3, 1000));
+        echo '</pre>';
+        exit;
+
         $this->view->corpus = $corpus;
     }
 }

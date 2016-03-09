@@ -109,9 +109,7 @@ echo flash();
     <div class="panel">
         <h4>View Corpus</h4>
         <a class="big blue button" href="<?php echo url(array('controller' => 'viewer', 'action' => 'ngram-search', 'id' => $corpus->id)); ?>">Ngram Search</a>
-<!--
         <a class="big blue button" href="<?php echo url(array('controller' => 'viewer', 'action' => 'ngram-frequencies', 'id' => $corpus->id)); ?>">Ngram Frequencies</a>
--->
     </div>
     <div class="panel">
         <h4>Text Element</h4>

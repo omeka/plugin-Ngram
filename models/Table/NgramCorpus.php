@@ -88,7 +88,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
     }
 
     /**
-     * Get a ngram count for a corpus.
+     * Get the total count for one ngram in a corpus, with or without a sequence.
      *
      * @param int $corpusId The corpus ID
      * @param string $ngram The ngram to query
@@ -115,7 +115,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
     }
 
     /**
-     * Get a total ngram count for a corpus.
+     * Get the total count for all ngrams in a corpus, with or without a sequence.
      *
      * @param int $corpusId The corpus ID
      * @param int $n The n to count
@@ -137,6 +137,29 @@ class Table_NgramCorpus extends Omeka_Db_Table
             $select->where('sequence_member <= ?', (int) $end);
         }
         return $db->fetchOne($select);
+    }
+
+    /**
+     * Get the total counts for one-or-more ngrams in a corpus, no sequence.
+     *
+     * @param int $corpusId The corpus ID
+     * @param int $n The n to count
+     * @param null|int $limit The number of ngrams
+     * @return array
+     */
+    public function getNgramsAndCounts($corpusId, $n, $limit = null)
+    {
+        $db = $this->getDb();
+        $select = $db->select()
+            ->from(array('cc' => $db->NgramCorpusCount), array('n.ngram', 'cc.count'))
+            ->join(array('n' => $db->NgramNgram), 'cc.ngram_id = n.id', array())
+            ->where('cc.corpus_id = ?', $corpusId)
+            ->where('n.n = ?', $n)
+            ->order('cc.count DESC');
+        if (is_numeric($limit)) {
+            $select->limit($limit);
+        }
+        return $db->fetchPairs($select);
     }
 
     /**
