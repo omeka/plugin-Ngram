@@ -24,6 +24,7 @@ echo flash();
     <h2>Search Query</h2>
     <?php if ($corpus->query): ?>
     <p><?php echo $corpus->query; ?></p>
+    <p><?php echo link_to_items_browse('Browse search results', $corpus->Query); ?></p>
     <?php else: ?>
     <p>[no query]</em></p>
     <?php endif; ?>

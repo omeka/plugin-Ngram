@@ -23,8 +23,9 @@ $textElementSetName = $textElement->getElementSet()->name;
     <fieldset>
     <legend>Item Pool</legend>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
-    <p>The item pool is the set of items from which you select a corpus. You may
-    continue to configure the item pool until you validate and accept corpus items.</p>
+    <p>The item pool is the set of items from which you select a corpus. Items without
+    the configured text element are removed from the item pool. You may continue to
+    configure the item pool until you validate and accept corpus items.</p>
     <div class="field">
         <div class="two columns alpha">
             <label for="query">Search Query</label>
