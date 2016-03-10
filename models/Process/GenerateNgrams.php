@@ -32,7 +32,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         $n = $args['n'];
 
         _log(sprintf(
-            'Memory limit for corpus #%s (n=%s): %s',
+            'Ngram generation START; corpus #%s (n=%s); memory limit %s',
             $corpus->id, $n, ini_get('memory_limit')
         ));
 
@@ -170,7 +170,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         }
 
         _log(sprintf(
-            'Peak usage for corpus #%s (n=%s): %s',
+            'Ngram generation END; corpus #%s (n=%s); peak usage %s',
             $corpus->id, $n, memory_get_peak_usage()
         ));
     }
