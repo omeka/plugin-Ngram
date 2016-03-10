@@ -11,7 +11,7 @@ echo head(array('title' => 'Corpus Viewer'));
 <h2>Ngrams in corpus "<?php echo $corpus->name; ?>"</h2>
 
 <form method="post">
-    Display this many <?php echo $this->formText('limit', $this->limit, array('size' => 3)) ?>
+    Display this many <?php echo $this->formText('limit', $this->limit, array('size' => 4)) ?>
     <?php echo $this->formRadio('n', $this->n, array(), array(1 => 'Unigrams', 2 => 'Bigrams'), ''); ?>
     <?php echo $this->formSubmit('submit', 'Go'); ?>
 </form>
@@ -20,20 +20,17 @@ echo head(array('title' => 'Corpus Viewer'));
 <table>
     <thead>
     <tr>
-        <th></th>
         <th>Ngram</th>
-        <th>Count</th>
-        <th>%</th>
+        <th style="text-align:right;">Total Count</th>
+        <th style="text-align:right;">Frequency %</th>
     </tr>
     </thead>
-    <tbody>
-    <?php $i = 1; ?>
+    <tbody style="font-family: monospace;">
     <?php foreach ($this->ngrams as $ngram => $count): ?>
     <tr>
-        <td><?php echo $i++; ?></td>
-        <td><?php echo $ngram; ?></td>
-        <td><?php echo $count; ?></td>
-        <td><?php echo number_format(($count / $this->totalNgramCount) * 100, 6); ?>%</td>
+        <td><?php echo strtolower($ngram); ?></td>
+        <td style="text-align:right;"><?php echo number_format($count); ?></td>
+        <td style="text-align:right;"><?php echo number_format(($count / $this->totalNgramCount) * 100, 6); ?>%</td>
     </tr>
     <?php endforeach; ?>
     </tbody>

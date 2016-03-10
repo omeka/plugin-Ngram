@@ -26,18 +26,18 @@ echo head(array('title' => 'Corpus Viewer'));
     <thead>
         <tr>
             <th>Ngram</th>
-            <th>n</th>
-            <th>Total Count</th>
-            <th>Frequency %</th>
+            <th style="text-align:right;">n</th>
+            <th style="text-align:right;">Total Count</th>
+            <th style="text-align:right;">Frequency %</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody style="font-family: monospace;">
         <?php foreach ($this->queryStats as $query => $stat): ?>
         <tr>
-            <td><?php echo $query; ?></td>
-            <td><?php echo $stat['n'] ? $stat['n'] : 'n/a'; ?></td>
-            <td><?php echo $stat['count']; ?></td>
-            <td><?php echo $stat['relative_frequency'] ? number_format($stat['relative_frequency'] * 100, 6) . '%' : 'n/a'; ?></td>
+            <td><?php echo strtolower($query); ?></td>
+            <td style="text-align:right;"><?php echo $stat['n'] ? $stat['n'] : 'n/a'; ?></td>
+            <td style="text-align:right;"><?php echo number_format($stat['count']); ?></td>
+            <td style="text-align:right;"><?php echo $stat['relative_frequency'] ? number_format($stat['relative_frequency'] * 100, 6) . '%' : 'n/a'; ?></td>
         </tr>
         <?php endforeach; ?>
     </tbody>
