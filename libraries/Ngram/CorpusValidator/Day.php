@@ -23,13 +23,7 @@ class Ngram_CorpusValidator_Day extends Ngram_CorpusValidator_AbstractCorpusVali
         } elseif (preg_match('/^\d+-\d+$/i', $text)) {
             return false;
         } else {
-            $timestamp = strtotime($text);
-            if ($timestamp) {
-                return date('Ymd', $timestamp);
-            } else {
-                return false;
-            }
+            return $this->getDateSequenceMember($text, 'Ymd');
         }
-
     }
 }

@@ -19,12 +19,7 @@ class Ngram_CorpusValidator_Month extends Ngram_CorpusValidator_AbstractCorpusVa
         if (preg_match('/^\d{4}$/', $text)) {
             return false;
         } else {
-            $timestamp = strtotime($text);
-            if ($timestamp) {
-                return date('Ym', $timestamp);
-            } else {
-                return false;
-            }
+            return $this->getDateSequenceMember($text, 'Ym');
         }
     }
 }

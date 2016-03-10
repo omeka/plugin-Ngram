@@ -19,12 +19,7 @@ class Ngram_CorpusValidator_Year extends Ngram_CorpusValidator_AbstractCorpusVal
         if (preg_match('/^\d{4}$/', $text)) {
             return $text;
         } else {
-            $timestamp = strtotime($text);
-            if ($timestamp) {
-                return date('Y', $timestamp);
-            } else {
-                return false;
-            }
+            return $this->getDateSequenceMember($text, 'Y');
         }
     }
 }
