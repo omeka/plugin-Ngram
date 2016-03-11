@@ -9,7 +9,12 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
     /**
      * @var array
      */
-    protected $_totalSequenceNgramCounts;
+    protected $_sequenceTotalNgramCounts;
+
+    /**
+     * @var array
+     */
+    protected $_sequenceTotalUniqueNgramCounts;
 
     /**
      * @var array
@@ -19,7 +24,12 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
     /**
      * @var int
      */
-    protected $_totalNgramCount;
+    protected $_totalNgramCount = 0;
+
+    /**
+     * @var int
+     */
+    protected $_totalUniqueNgramCount = 0;
 
     public function run($args)
     {
@@ -127,6 +137,12 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
         $corpus->id,
         $db->quote($n, Zend_Db::INT_TYPE));
 
+        $corpusTotalUniqueCountsSql = sprintf('
+        INSERT INTO %s (corpus_id, n, sequence_member, count) VALUES (%s, %s, ?, ?)',
+        $db->NgramCorpusTotalUniqueCount,
+        $corpus->id,
+        $db->quote($n, Zend_Db::INT_TYPE));
+
         $corpusCountsSql = sprintf('
         INSERT INTO %s (corpus_id, ngram_id, count) VALUES (%s, ?, ?)',
         $db->NgramCorpusCount,
@@ -141,15 +157,18 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                             $ngramId,
                             $sequenceMember,
                             $count,
-                            $count / $this->_totalSequenceNgramCounts[$sequenceMember],
+                            $count / $this->_sequenceTotalNgramCounts[$sequenceMember],
                         ));
                     }
                 }
                 foreach ($this->_ngramCounts as $ngramId => $count) {
                     $db->query($corpusCountsSql, array($ngramId, $count));
                 }
-                foreach ($this->_totalSequenceNgramCounts as $sequenceMember => $count) {
+                foreach ($this->_sequenceTotalNgramCounts as $sequenceMember => $count) {
                     $db->query($corpusTotalCountsSql, array($sequenceMember, $count));
+                }
+                foreach ($this->_sequenceTotalUniqueNgramCounts as $sequenceMember => $count) {
+                    $db->query($corpusTotalUniqueCountsSql, array($sequenceMember, $count));
                 }
             } else {
                 foreach ($this->_ngramCounts as $ngramId => $count) {
@@ -162,6 +181,7 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
                     $db->query($corpusCountsSql, array($ngramId, $count));
                 }
                 $db->query($corpusTotalCountsSql, array(null, $this->_totalNgramCount));
+                $db->query($corpusTotalUniqueCountsSql, array(null, $this->_totalUniqueNgramCount));
             }
             $db->commit();
         } catch (Exception $e) {
@@ -186,30 +206,29 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
      */
     protected function _incrementCount($ngramId, $sequenceMember = null)
     {
+        $this->_totalNgramCount++;
+
         if (!isset($this->_ngramCounts[$ngramId])) {
+            $this->_totalUniqueNgramCount++;
             $this->_ngramCounts[$ngramId] = 0;
         }
         $this->_ngramCounts[$ngramId]++;
 
-        if (!isset($this->_totalNgramCount)) {
-            $this->_totalNgramCount = 0;
-        }
-        $this->_totalNgramCount++;
-
         if (null !== $sequenceMember) {
             // This is a sequenced corpus.
-            if (!isset($this->_sequenceNgramCounts[$sequenceMember])) {
-                $this->_sequenceNgramCounts[$sequenceMember] = array();
-            }
             if (!isset($this->_sequenceNgramCounts[$sequenceMember][$ngramId])) {
+                if (!isset($this->_sequenceTotalUniqueNgramCounts[$sequenceMember])) {
+                    $this->_sequenceTotalUniqueNgramCounts[$sequenceMember] = 0;
+                }
+                $this->_sequenceTotalUniqueNgramCounts[$sequenceMember]++;
                 $this->_sequenceNgramCounts[$sequenceMember][$ngramId] = 0;
             }
             $this->_sequenceNgramCounts[$sequenceMember][$ngramId]++;
 
-            if (!isset($this->_totalSequenceNgramCounts[$sequenceMember])) {
-                $this->_totalSequenceNgramCounts[$sequenceMember] = 0;
+            if (!isset($this->_sequenceTotalNgramCounts[$sequenceMember])) {
+                $this->_sequenceTotalNgramCounts[$sequenceMember] = 0;
             }
-            $this->_totalSequenceNgramCounts[$sequenceMember]++;
+            $this->_sequenceTotalNgramCounts[$sequenceMember]++;
         }
     }
 }

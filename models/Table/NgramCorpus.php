@@ -140,6 +140,31 @@ class Table_NgramCorpus extends Omeka_Db_Table
     }
 
     /**
+     * Get the total count for all unique ngrams in a corpus, no sequence.
+     *
+     * @param int $corpusId The corpus ID
+     * @param int $n The n to count
+     * @param null|int $start The range start
+     * @param null|int $end The range end
+     * @return int
+     */
+    public function getTotalUniqueNgramCount($corpusId, $n, $start = null, $end = null)
+    {
+        $db = $this->getDb();
+        $select = $db->select()
+            ->from($db->NgramCorpusTotalUniqueCount, 'SUM(count)')
+            ->where('corpus_id = ?', (int) $corpusId)
+            ->where('n =  ?', $n);
+        if (is_numeric($start)) {
+            $select->where('sequence_member >= ?', (int) $start);
+        }
+        if (is_numeric($end)) {
+            $select->where('sequence_member <= ?', (int) $end);
+        }
+        return $db->fetchOne($select);
+    }
+
+    /**
      * Get the total counts for one-or-more ngrams in a corpus, no sequence.
      *
      * @param int $corpusId The corpus ID
@@ -347,6 +372,18 @@ class Table_NgramCorpus extends Omeka_Db_Table
     {
         $db = $this->getDb();
         $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusTotalCount);
+        $db->query($sql, $corpusId);
+    }
+
+    /**
+     * Delete corpus total unique counts.
+     *
+     * @param int $corpusId
+     */
+    public function deleteCorpusTotalUniqueCounts($corpusId)
+    {
+        $db = $this->getDb();
+        $sql = sprintf('DELETE FROM %s WHERE corpus_id = ?', $db->NgramCorpusTotalUniqueCount);
         $db->query($sql, $corpusId);
     }
 

@@ -21,13 +21,25 @@ echo head(array('title' => 'Corpus Viewer'));
 
 <?php if ($this->queryStats):?>
 
-<h3>Total Counts</h3>
+<?php if ($corpus->isSequenced()): ?>
+<h3>Sequence Graph</h3>
+<?php if ($this->dataJson): ?>
+<div id="sequence-graph"
+    data-graph-config="<?php echo $this->escape(json_encode($this->graphConfig)); ?>"
+    data-data-keys-value="<?php echo $this->escape(json_encode($this->dataKeysValue)); ?>"
+    data-data-json="<?php echo $this->escape(json_encode($this->dataJson)); ?>">Loading...</div>
+<?php else: ?>
+<p>No results to graph.</p>
+<?php endif; ?>
+<?php endif; ?>
+
+<h3>Ngram Counts</h3>
 <table>
     <thead>
         <tr>
             <th>Ngram</th>
             <th style="text-align:right;">n</th>
-            <th style="text-align:right;">Total Count</th>
+            <th style="text-align:right;">Count</th>
             <th style="text-align:right;">Frequency %</th>
         </tr>
     </thead>
@@ -43,17 +55,26 @@ echo head(array('title' => 'Corpus Viewer'));
     </tbody>
 </table>
 
-<?php if ($corpus->isSequenced()): ?>
-<h3>Sequence Graph</h3>
-<?php if ($this->dataJson): ?>
-<div id="sequence-graph"
-    data-graph-config="<?php echo $this->escape(json_encode($this->graphConfig)); ?>"
-    data-data-keys-value="<?php echo $this->escape(json_encode($this->dataKeysValue)); ?>"
-    data-data-json="<?php echo $this->escape(json_encode($this->dataJson)); ?>"></div>
-<?php else: ?>
-<p>No results to graph.</p>
-<?php endif; ?>
-<?php endif; ?>
+<h3>Total Ngram Counts</h3>
+<table>
+    <thead>
+        <tr>
+            <th style="text-align:right;">n</th>
+            <th style="text-align:right;">Total Count</th>
+            <th style="text-align:right;">Total Unique Count</th>
+        </tr>
+    </thead>
+    <tbody style="font-family: monospace;">
+        <?php foreach ($this->corpusStats as $n => $stat): ?>
+        <tr>
+            <td style="text-align:right;"><?php echo $n; ?></td>
+            <td style="text-align:right;"><?php echo number_format($stat['total_count']); ?></td>
+            <td style="text-align:right;"><?php echo number_format($stat['total_unique_count']); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
 <?php endif; ?>
 
 <?php echo foot(); ?>

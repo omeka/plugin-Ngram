@@ -43,6 +43,18 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
                 return ($a['count'] < $b['count']) ? 1 : -1;
             });
 
+            $corpusStats = array();
+            foreach (array(1, 2, 3) as $n) {
+                $corpusStats[$n] = array(
+                    'total_count' => $table->getTotalNgramCount(
+                        $corpus->id, $n, $request->get('start'), $request->get('end')
+                    ),
+                    'total_unique_count' => $table->getTotalUniqueNgramCount(
+                        $corpus->id, $n, $request->get('start'), $request->get('end')
+                    ),
+                );
+            }
+
             if ($corpus->isSequenced()) {
                 // Query each string and combine the results.
                 $data = array();
@@ -90,6 +102,7 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
             }
 
             $this->view->queryStats = $queryStats;
+            $this->view->corpusStats = $corpusStats;
         }
 
         $this->view->corpus = $corpus;
@@ -112,6 +125,7 @@ class Ngram_ViewerController extends Omeka_Controller_AbstractActionController
             $limit = $request->get('limit');
             $this->view->ngrams = $table->getNgramsAndCounts($corpus->id, $n, $limit);
             $this->view->totalNgramCount = $table->getTotalNgramCount($corpus->id, $n);
+            $this->view->totalUniqueNgramCount = $table->getTotalUniqueNgramCount($corpus->id, $n);
         }
 
         $this->view->corpus = $corpus;

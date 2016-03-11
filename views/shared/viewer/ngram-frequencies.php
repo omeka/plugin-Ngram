@@ -17,6 +17,16 @@ echo head(array('title' => 'Corpus Viewer'));
 </form>
 
 <?php if ($this->ngrams): ?>
+<?php
+if (2 == $this->n) {
+    $nType = 'bigrams';
+} elseif (3 == $this->n) {
+    $nType = 'trigrams';
+} else {
+    $nType = 'unigrams';
+}
+?>
+<p>This corpus has <strong><?php echo number_format($this->totalNgramCount) ?></strong> total <?php echo $nType; ?> with <strong><?php echo number_format($this->totalUniqueNgramCount) ?></strong> unique <?php echo $nType; ?>.</p>
 <table>
     <thead>
     <tr>
