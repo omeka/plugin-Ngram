@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus` (
   `items_corpus` longtext COLLATE utf8_unicode_ci,
   `n1_process_id` int(11) DEFAULT NULL,
   `n2_process_id` int(11) DEFAULT NULL,
+  `n3_process_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 SQL

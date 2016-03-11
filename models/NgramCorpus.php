@@ -13,6 +13,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     public $items_corpus;
     public $n1_process_id;
     public $n2_process_id;
+    public $n3_process_id;
 
     protected $_related = array(
         'TextElement' => 'getTextElement',
@@ -22,6 +23,7 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
         'Query' => 'getQuery',
         'N1Process' => 'getN1Process',
         'N2Process' => 'getN2Process',
+        'N3Process' => 'getN3Process',
     );
 
     /**
@@ -109,6 +111,16 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
     }
 
     /**
+     * Get the process responsible for generating trigrams.
+     *
+     * @return Process
+     */
+    public function getN3Process()
+    {
+        return $this->getTable('Process')->find($this->n3_process_id);
+    }
+
+    /**
      * Is this a sequenced corpus?
      *
      * @return bool
@@ -179,6 +191,19 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
             && $this->hasValidTextElement()
             && $this->ItemsCorpus
             && !$this->N2Process;
+    }
+
+    /**
+     * Can a user generate trigrams?
+     *
+     * @return bool
+     */
+    public function canGenerateN3grams()
+    {
+        return $this->getTable()->processIsAvailable()
+            && $this->hasValidTextElement()
+            && $this->ItemsCorpus
+            && !$this->N3Process;
     }
 
     public function getRecordUrl($action = 'show')

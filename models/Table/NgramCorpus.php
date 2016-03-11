@@ -274,17 +274,21 @@ class Table_NgramCorpus extends Omeka_Db_Table
         $db = $this->getDb();
         $sql = sprintf('
         SELECT 1
-        FROM omeka_ngram_corpus nc
-        LEFT JOIN omeka_processes p1 ON nc.n1_process_id = p1.id
-        LEFT JOIN omeka_processes p2 ON nc.n2_process_id = p2.id
+        FROM %s nc
+        LEFT JOIN %s p1 ON nc.n1_process_id = p1.id
+        LEFT JOIN %s p2 ON nc.n2_process_id = p2.id
+        LEFT JOIN %s p3 ON nc.n3_process_id = p3.id
         WHERE p1.status != ?
-        OR p2.status != ?',
+        OR p2.status != ?
+        OR p3.status != ?',
         $db->NgramCorpus,
+        $db->Process,
         $db->Process,
         $db->Process);
         return !$db->fetchOne($sql, array(
             Process::STATUS_COMPLETED,
-            Process::STATUS_COMPLETED
+            Process::STATUS_COMPLETED,
+            Process::STATUS_COMPLETED,
         ));
     }
 
@@ -305,6 +309,7 @@ class Table_NgramCorpus extends Omeka_Db_Table
             $processVars = array(
                 array('N1Process', 'n1_process_id'),
                 array('N2Process', 'n2_process_id'),
+                array('N3Process', 'n3_process_id'),
             );
             foreach ($processVars as $processVar) {
                 $process = $corpus->$processVar[0];

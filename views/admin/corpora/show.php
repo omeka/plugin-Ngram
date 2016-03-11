@@ -102,6 +102,22 @@ echo flash();
         <?php else: ?>
             <a class="big green button" disabled>Generate Bigrams</a>
         <?php endif; ?>
+        <?php if ($corpus->canGenerateN3grams()): ?>
+            <form method="post" action="<?php echo $corpus->getRecordUrl('generate-ngrams'); ?>">
+                <?php echo $this->formHidden('n', 3); ?>
+                <?php echo $this->formSubmit('generate_ngrams', 'Generate Trigrams', array('class' => 'big green button', 'style' => 'width:100%')) ?>
+            </form>
+        <?php elseif ($corpus->N3Process && Process::STATUS_STARTING === $corpus->N3Process->status): ?>
+            <a class="big green button" disabled>Trigrams Starting …</a>
+        <?php elseif ($corpus->N3Process && Process::STATUS_IN_PROGRESS === $corpus->N3Process->status): ?>
+            <a class="big green button" disabled>Trigrams In Progress …</a>
+        <?php elseif ($corpus->N3Process && Process::STATUS_COMPLETED === $corpus->N3Process->status): ?>
+            <a class="big green button" disabled>Trigrams Generated</a>
+        <?php elseif ($corpus->N3Process && Process::STATUS_ERROR === $corpus->N3Process->status): ?>
+            <a class="big red button" disabled>Trigrams Error</a>
+        <?php else: ?>
+            <a class="big green button" disabled>Generate Trigrams</a>
+        <?php endif; ?>
         <?php else: ?>
         <p class="alert">The corpus text element does not match the one currently
         set in plugin configuration. Some features have been restricted.</p>

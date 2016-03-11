@@ -11,12 +11,12 @@ echo head(array('title' => 'Corpus Viewer'));
 <h2>Search corpus "<?php echo $corpus->name; ?>"</h2>
 
 <form method="post">
-    Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 40, 'style' => 'margin-bottom:4px')); ?><br>
+    Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 60, 'style' => 'margin-bottom:4px')); ?><br>
     <?php if ($corpus->isSequenced()): ?>
     between <?php echo $this->formText('start', $this->start, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
     and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
     <?php endif; ?>
-    <?php echo $this->formSubmit('submit', 'Search'); ?>
+    <?php echo $this->formSubmit('submit', 'Go'); ?>
 </form>
 
 <?php if ($this->queryStats):?>

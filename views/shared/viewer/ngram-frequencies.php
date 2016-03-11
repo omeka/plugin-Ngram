@@ -12,7 +12,7 @@ echo head(array('title' => 'Corpus Viewer'));
 
 <form method="post">
     Display this many <?php echo $this->formText('limit', $this->limit, array('size' => 4)) ?>
-    <?php echo $this->formRadio('n', $this->n, array(), array(1 => 'Unigrams', 2 => 'Bigrams'), ''); ?>
+    <?php echo $this->formRadio('n', $this->n, array(), array(1 => 'Unigrams', 2 => 'Bigrams', 3 => 'Trigrams'), ''); ?>
     <?php echo $this->formSubmit('submit', 'Go'); ?>
 </form>
 
