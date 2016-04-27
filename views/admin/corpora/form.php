@@ -93,3 +93,30 @@ $textElementSetName = $textElement->getElementSet()->name;
     <?php endif; ?>
     </fieldset>
 </section>
+<script type="text/javascript">
+// Set the placeholder attribute to hint a format for the sequence range.
+function setRangePlaceholder(type) {
+    var placeholder;
+    switch (type) {
+        case 'year':
+            placeholder = 'yyyy-yyyy';
+            break;
+        case 'month':
+            placeholder = 'yyyymm-yyyymm';
+            break;
+        case 'day':
+            placeholder = 'yyyymmdd-yyyymmdd';
+            break;
+        case 'numeric':
+            placeholder = 'n-n';
+            break;
+        default:
+            placeholder = '';
+    }
+    jQuery('#sequence_range').attr('placeholder', placeholder);
+}
+setRangePlaceholder(jQuery('#sequence_type').val());
+jQuery('#sequence_type').on('change', function(foo) {
+    setRangePlaceholder(jQuery(this).val());
+});
+</script>
