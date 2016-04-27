@@ -16,6 +16,14 @@ class NgramPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookInstall()
     {
+        // Don't install if the IntlBreakIterator class doesn't exist.
+        if (!class_exists('IntlBreakIterator')) {
+            throw new Omeka_Plugin_Installer_Exception(
+                'The IntlBreakIterator class is not installed (needs intl 3.0.0a2 '
+              . 'or newer). IntlBreakIterator must be installed to install this plugin.'
+            );
+        }
+
         $db = get_db();
         $db->query(<<<SQL
 CREATE TABLE IF NOT EXISTS `{$db->prefix}ngram_corpus` (
