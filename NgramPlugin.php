@@ -16,11 +16,20 @@ class NgramPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookInstall()
     {
-        // Don't install if the IntlBreakIterator class doesn't exist.
+        // Don't install if the intl extension is not loaded. The plugin's
+        // omeka_minimum_version of 2.4 requires a version of PHP that bundles
+        // the intl extension, but it still may not be loaded.
+        if (!extension_loaded('intl')) {
+            throw new Omeka_Plugin_Installer_Exception(
+                'PHP\'s intl extension is not loaded. It must be loaded to install this plugin.'
+            );
+        }
+        // Don't install if the IntlBreakIterator class doesn't exist. Probably
+        // don't need this check since the above check *should* satisfy the
+        // requirement. Doing it anyway, just in case.
         if (!class_exists('IntlBreakIterator')) {
             throw new Omeka_Plugin_Installer_Exception(
-                'The IntlBreakIterator class is not installed (needs intl 3.0.0a2 '
-              . 'or newer). IntlBreakIterator must be installed to install this plugin.'
+                'The IntlBreakIterator class (part of PHP\'s intl extension) does not exist. It must exist to install this plugin.'
             );
         }
 
