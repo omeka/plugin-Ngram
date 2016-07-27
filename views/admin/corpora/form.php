@@ -17,7 +17,7 @@ $textElementSetName = $textElement->getElementSet()->name;
         </div>
         <div class="inputs five columns omega">
             <p class="explanation">Make this corpus available to the public?</p>
-            <?php echo $this->formCheckbox('public', (bool) $corpus->public, null, array('checked' => true)); ?>
+            <?php echo $this->formCheckbox('public', null, array('checked' => (bool) $corpus->public)); ?>
         </div>
     </div>
     <fieldset>
