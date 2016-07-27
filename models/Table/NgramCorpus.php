@@ -332,18 +332,18 @@ class Table_NgramCorpus extends Omeka_Db_Table
         $corpora = $this->getDb()->getTable('NgramCorpus')->findAll();
         foreach ($corpora as $corpus) {
             $processVars = array(
-                array('N1Process', 'n1_process_id'),
-                array('N2Process', 'n2_process_id'),
-                array('N3Process', 'n3_process_id'),
+                'N1Process' => 'n1_process_id',
+                'N2Process' => 'n2_process_id',
+                'N3Process' => 'n3_process_id',
             );
-            foreach ($processVars as $processVar) {
-                $process = $corpus->$processVar[0];
+            foreach ($processVars as $nProcess => $nProcessId) {
+                $process = $corpus->$nProcess;
                 if (Process::STATUS_ERROR === $process->status) {
-                    $corpus->$processVar[1] = null;
+                    $corpus->$nProcessId = null;
                 } elseif (Process::STATUS_STARTING === $process->status
                     || Process::STATUS_IN_PROGRESS === $process->status
                 ) {
-                    $corpus->$processVar[1] = null;
+                    $corpus->$nProcessId = null;
                     Omeka_Job_Process_Dispatcher::stopProcess($process);
                 }
             }
