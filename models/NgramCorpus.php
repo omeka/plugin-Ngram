@@ -259,11 +259,14 @@ class NgramCorpus extends Omeka_Record_AbstractRecord
                 'element_id' => get_option('ngram_text_element_id'),
                 'type' => 'is not empty',
             );
-            $items = $this->getTable('Item')->findBy($query);
-            $itemIds = array();
-            foreach ($items as $item) {
-                $itemIds[] = $item->id;
-            }
+
+            // Fetch only the Item record IDs to avoid reaching the memory limit
+            // for large item pools.
+            $table = $this->getTable('Item');
+            $select = $table->getSelectForFindBy($query)
+                ->reset(Zend_Db_Select::COLUMNS)
+                ->from(array(), 'items.id');
+            $itemIds = $table->fetchCol($select);
             $this->items_pool = json_encode($itemIds);
         }
 
