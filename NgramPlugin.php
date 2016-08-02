@@ -167,8 +167,8 @@ SQL
     public function hookDefineAcl($args)
     {
         $acl = $args['acl'];
-        $acl->addResource('Ngram_Index');
-        $acl->allow(null, 'Ngram_Index');
+        $acl->addResource('Ngram_Corpora');
+        $acl->allow(null, 'Ngram_Corpora', array('browse', 'index', 'show'));
     }
 
     public function filterAdminNavigationMain($nav)
@@ -176,7 +176,7 @@ SQL
         $nav[] = array(
             'label' => __('Ngram'),
             'uri' => url('ngram/corpora'),
-            'resource' => ('Ngram_Index'),
+            'resource' => ('Ngram_Corpora'),
         );
         return $nav;
     }
@@ -185,8 +185,8 @@ SQL
     {
         $nav[] = array(
             'label' => __('Ngram Viewer'),
-            'uri' => url('ngram'),
-            'resource' => ('Ngram_Index'),
+            'uri' => url('ngram/corpora'),
+            'resource' => ('Ngram_Corpora'),
         );
         return $nav;
     }
