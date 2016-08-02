@@ -8,6 +8,8 @@ if ($this->dataJson) {
 echo head(array('title' => 'Corpus Viewer'));
 ?>
 
+<?php echo link_to($corpus, 'show', '◄ Back to corpus');?>
+
 <h2>Ngrams in corpus "<?php echo $corpus->name; ?>"</h2>
 
 <form method="post">
