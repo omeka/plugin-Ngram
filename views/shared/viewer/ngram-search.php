@@ -14,9 +14,27 @@ echo head(array('title' => 'Corpus Viewer'));
 
 <form method="post">
     Graph these comma-separated phrases: <?php echo $this->formText('queries', $this->queries, array('size' => 60, 'style' => 'margin-bottom:4px')); ?><br>
-    <?php if ($corpus->isSequenced()): ?>
-    between <?php echo $this->formText('start', $this->start, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
-    and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px')); ?>
+    <?php
+    if ($corpus->isSequenced()):
+    switch ($corpus->sequence_type) {
+        case 'year':
+            $placeholder = 'yyyy';
+            break;
+        case 'month':
+            $placeholder = 'yyyymm';
+            break;
+        case 'day':
+            $placeholder = 'yyyymmdd';
+            break;
+        case 'numeric':
+            $placeholder = 'n-n';
+            break;
+        default:
+            $placeholder = '';
+    }
+    ?>
+    between <?php echo $this->formText('start', $this->start, array('size' => 8, 'style' => 'margin-bottom:4px', 'placeholder' => $placeholder)); ?>
+    and <?php echo $this->formText('end', $this->end, array('size' => 8, 'style' => 'margin-bottom:4px', 'placeholder' => $placeholder)); ?>
     <?php endif; ?>
     <?php echo $this->formSubmit('submit', 'Go'); ?>
 </form>
