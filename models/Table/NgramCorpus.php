@@ -56,6 +56,14 @@ class Table_NgramCorpus extends Omeka_Db_Table
         return array('id', 'name');
     }
 
+    public function getSelect()
+    {
+        $select = parent::getSelect();
+        $permissions = new Omeka_Db_Select_PublicPermissions('Ngram_Corpora');
+        $permissions->apply($select, 'ngram_corpus', null);
+        return $select;
+    }
+
     /**
      * Query a corpus ngram.
      *
