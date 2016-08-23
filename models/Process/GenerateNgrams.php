@@ -33,6 +33,13 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
 
     public function run($args)
     {
+        // Don't run the process if the intl extension is not loaded.
+        if (!extension_loaded('intl')) {
+            $message = 'PHP\'s intl extension is not loaded. It must be loaded to generate ngrams.';
+            _log($message, Zend_Log::ERR);
+            throw new Exception($message);
+        }
+
         // Raise the memory limit.
         ini_set('memory_limit', '1G');
 
