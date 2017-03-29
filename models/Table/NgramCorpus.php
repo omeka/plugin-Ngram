@@ -328,8 +328,8 @@ class Table_NgramCorpus extends Omeka_Db_Table
     /**
      * Reset problem ngram generation processes.
      *
-     * This resets hanging and error processes, allowing users to re-generate
-     * ngrams if something goes wrong.
+     * This resets hanging, error, and stopped processes, allowing users to
+     * re-generate ngrams if something goes wrong.
      *
      * Becuase of our use of database transactions, we can assume that hanging
      * or error processes result in zero affected rows in the corpus_ngram
@@ -346,7 +346,9 @@ class Table_NgramCorpus extends Omeka_Db_Table
             );
             foreach ($processVars as $nProcess => $nProcessId) {
                 $process = $corpus->$nProcess;
-                if (Process::STATUS_ERROR === $process->status) {
+                if (Process::STATUS_ERROR === $process->status
+                    || Process::STATUS_STOPPED === $process->status
+                ) {
                     $corpus->$nProcessId = null;
                 } elseif (Process::STATUS_STARTING === $process->status
                     || Process::STATUS_IN_PROGRESS === $process->status
