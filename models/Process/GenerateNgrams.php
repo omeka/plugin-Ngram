@@ -33,9 +33,14 @@ class Process_GenerateNgrams extends Omeka_Job_Process_AbstractProcess
 
     public function run($args)
     {
-        // Don't run the process if the intl extension is not loaded.
+        // Don't run the process if some dependencies aren't met.
         if (!extension_loaded('intl')) {
             $message = 'PHP\'s intl extension is not loaded. It must be loaded to generate ngrams.';
+            _log($message, Zend_Log::ERR);
+            throw new Exception($message);
+        }
+        if (!class_exists('IntlBreakIterator')) {
+            $message = 'The IntlBreakIterator class (part of PHP\'s intl extension) does not exist. It must be loaded to generate ngrams.';
             _log($message, Zend_Log::ERR);
             throw new Exception($message);
         }
