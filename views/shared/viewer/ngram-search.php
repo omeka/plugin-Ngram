@@ -1,8 +1,8 @@
 <?php
 if ($this->dataJson) {
-    queue_css_file('c3/0.4.10/c3.min');
-    queue_js_file('d3/3.5.16/d3.min');
-    queue_js_file('c3/0.4.10/c3.min');
+    queue_css_file('c3/0.4.11/c3.min');
+    queue_js_file('d3/3.5.17/d3.min');
+    queue_js_file('c3/0.4.11/c3.min');
     queue_js_file('sequence-graph');
 }
 echo head(array('title' => 'Corpus Viewer'));
