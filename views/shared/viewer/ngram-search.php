@@ -54,46 +54,50 @@ echo head(array('title' => 'Corpus Viewer'));
 <?php endif; ?>
 
 <h3>Ngram Counts</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Ngram</th>
-            <th style="text-align:right;">n</th>
-            <th style="text-align:right;">Count</th>
-            <th style="text-align:right;">Frequency %</th>
-        </tr>
-    </thead>
-    <tbody style="font-family: monospace;">
-        <?php foreach ($this->queryStats as $query => $stat): ?>
-        <tr>
-            <td><?php echo strtolower($query); ?></td>
-            <td style="text-align:right;"><?php echo $stat['n'] ? $stat['n'] : 'n/a'; ?></td>
-            <td style="text-align:right;"><?php echo number_format($stat['count']); ?></td>
-            <td style="text-align:right;"><?php echo $stat['relative_frequency'] ? number_format($stat['relative_frequency'] * 100, 6) . '%' : 'n/a'; ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th>Ngram</th>
+                <th style="text-align:right;">n</th>
+                <th style="text-align:right;">Count</th>
+                <th style="text-align:right;">Frequency %</th>
+            </tr>
+        </thead>
+        <tbody style="font-family: monospace;">
+            <?php foreach ($this->queryStats as $query => $stat): ?>
+            <tr>
+                <td><?php echo strtolower($query); ?></td>
+                <td style="text-align:right;"><?php echo $stat['n'] ? $stat['n'] : 'n/a'; ?></td>
+                <td style="text-align:right;"><?php echo number_format($stat['count']); ?></td>
+                <td style="text-align:right;"><?php echo $stat['relative_frequency'] ? number_format($stat['relative_frequency'] * 100, 6) . '%' : 'n/a'; ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <h3>Total Ngram Counts</h3>
-<table>
-    <thead>
-        <tr>
-            <th style="text-align:right;">n</th>
-            <th style="text-align:right;">Total Count</th>
-            <th style="text-align:right;">Total Unique Count</th>
-        </tr>
-    </thead>
-    <tbody style="font-family: monospace;">
-        <?php foreach ($this->corpusStats as $n => $stat): ?>
-        <tr>
-            <td style="text-align:right;"><?php echo $n; ?></td>
-            <td style="text-align:right;"><?php echo number_format($stat['total_count']); ?></td>
-            <td style="text-align:right;"><?php echo number_format($stat['total_unique_count']); ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table>
+        <thead>
+            <tr>
+                <th style="text-align:right;">n</th>
+                <th style="text-align:right;">Total Count</th>
+                <th style="text-align:right;">Total Unique Count</th>
+            </tr>
+        </thead>
+        <tbody style="font-family: monospace;">
+            <?php foreach ($this->corpusStats as $n => $stat): ?>
+            <tr>
+                <td style="text-align:right;"><?php echo $n; ?></td>
+                <td style="text-align:right;"><?php echo number_format($stat['total_count']); ?></td>
+                <td style="text-align:right;"><?php echo number_format($stat['total_unique_count']); ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <?php endif; ?>
 

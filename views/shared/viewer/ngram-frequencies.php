@@ -23,24 +23,26 @@ if (2 == $this->n) {
 }
 ?>
 <p>This corpus has <strong><?php echo number_format($this->totalNgramCount) ?></strong> total <?php echo $nType; ?> with <strong><?php echo number_format($this->totalUniqueNgramCount) ?></strong> unique <?php echo $nType; ?>.</p>
-<table>
-    <thead>
-    <tr>
-        <th>Ngram</th>
-        <th style="text-align:right;">Total Count</th>
-        <th style="text-align:right;">Frequency %</th>
-    </tr>
-    </thead>
-    <tbody style="font-family: monospace;">
-    <?php foreach ($this->ngrams as $ngram => $count): ?>
-    <tr>
-        <td><?php echo strtolower($ngram); ?></td>
-        <td style="text-align:right;"><?php echo number_format($count); ?></td>
-        <td style="text-align:right;"><?php echo number_format(($count / $this->totalNgramCount) * 100, 6); ?>%</td>
-    </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table>
+        <thead>
+        <tr>
+            <th>Ngram</th>
+            <th style="text-align:right;">Total Count</th>
+            <th style="text-align:right;">Frequency %</th>
+        </tr>
+        </thead>
+        <tbody style="font-family: monospace;">
+        <?php foreach ($this->ngrams as $ngram => $count): ?>
+        <tr>
+            <td><?php echo strtolower($ngram); ?></td>
+            <td style="text-align:right;"><?php echo number_format($count); ?></td>
+            <td style="text-align:right;"><?php echo number_format(($count / $this->totalNgramCount) * 100, 6); ?>%</td>
+        </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 <?php endif; ?>
 
 <?php echo foot(); ?>
