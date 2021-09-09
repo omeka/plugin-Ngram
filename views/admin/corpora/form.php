@@ -37,7 +37,7 @@ $textElementSetName = $textElement->getElementSet()->name;
         </div>
     </div>
     <?php else: ?>
-    <p class="alert">The item pool cannot be configured.</p>
+    <p class="flash alert">The item pool cannot be configured.</p>
     <?php endif; ?>
     </fieldset>
     <fieldset>
@@ -89,7 +89,7 @@ $textElementSetName = $textElement->getElementSet()->name;
         </div>
     </div>
     <?php else: ?>
-    <p class="alert">The sequence cannot be configured.</p>
+    <p class="flash alert">The sequence cannot be configured.</p>
     <?php endif; ?>
     </fieldset>
 </section>

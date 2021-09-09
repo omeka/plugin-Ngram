@@ -8,7 +8,7 @@ echo head(array('title' => 'Validate Corpus Items'));
 generate ngrams.</p>
 <form method="post">
     <?php echo $this->formSubmit('accept_items', 'Accept Items'); ?>
-    <span class="alert"><strong>CAUTION</strong>: you will not be able to configure
+    <span class="flash alert"><strong>CAUTION</strong>: you will not be able to configure
     the item pool or re-validate after you accept.</span>
 </form>
 

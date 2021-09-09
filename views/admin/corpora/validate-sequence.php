@@ -24,7 +24,7 @@ edit items to correct their sequence texts and reload this page to update the li
 Once you've accepted the valid items you will be able to generate ngrams.</p>
 <form method="post">
     <?php echo $this->formSubmit('accept_items', 'Accept Valid Items'); ?>
-    <span class="alert"><strong>CAUTION</strong>: you will not be able to configure
+    <span class="flash alert"><strong>CAUTION</strong>: you will not be able to configure
     the item pool or re-validate after you accept.</span>
 </form>
 <hr>

@@ -12,7 +12,7 @@
                 array('id' => 'text_element_id'),
                 $elementOptions
             ) ?>
-            <p class="alert"><strong>CAUTION</strong>: Changing the text element
+            <p class="flash alert"><strong>CAUTION</strong>: Changing the text element
             after it's been set will prevent you from validating items and generating
             ngrams for corpora set to a different text element. Existing corpus
             ngrams are not affected.</p>

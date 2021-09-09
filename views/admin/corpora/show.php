@@ -119,7 +119,7 @@ echo flash();
             <a class="big green button" disabled>Generate Trigrams</a>
         <?php endif; ?>
         <?php else: ?>
-        <p class="alert">The corpus text element does not match the one currently
+        <p class="flash alert">The corpus text element does not match the one currently
         set in plugin configuration. Some features have been restricted.</p>
         <?php endif; ?>
     </div>
