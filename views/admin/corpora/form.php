@@ -20,8 +20,7 @@ $textElementSetName = $textElement->getElementSet()->name;
             <?php echo $this->formCheckbox('public', null, array('checked' => (bool) $corpus->public)); ?>
         </div>
     </div>
-    <fieldset>
-    <legend>Item Pool</legend>
+    <h2>Item Pool</h2>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
     <p>The item pool is the set of items from which you select a corpus. Items without
     the configured text element are removed from the item pool. You may continue to
@@ -39,9 +38,7 @@ $textElementSetName = $textElement->getElementSet()->name;
     <?php else: ?>
     <p class="flash alert">The item pool cannot be configured.</p>
     <?php endif; ?>
-    </fieldset>
-    <fieldset>
-    <legend>Sequence</legend>
+    <h2>Sequence</h2>
     <?php if (!$corpus->id || $corpus->canValidateItems()): ?>
     <p>The sequence is the logical order of items in your corpus. A sequence is not
     required but is needed to generate a sequence graph. You may continue to configure
@@ -91,7 +88,6 @@ $textElementSetName = $textElement->getElementSet()->name;
     <?php else: ?>
     <p class="flash alert">The sequence cannot be configured.</p>
     <?php endif; ?>
-    </fieldset>
 </section>
 <script type="text/javascript">
 // Set the placeholder attribute to hint a format for the sequence range.
