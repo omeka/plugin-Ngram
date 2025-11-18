@@ -136,7 +136,7 @@ echo flash();
         <h4>Item Counts</h4>
         <ul>
             <li>Pool: <?php echo count($corpus->ItemsPool); ?></li>
-            <li>Corpus: <?php echo @count($corpus->ItemsCorpus); ?></li>
+            <li>Corpus: <?php echo $corpus->ItemsCorpus ? count($corpus->ItemsCorpus) : ''; ?></li>
         </ul>
     </div>
 </section>
